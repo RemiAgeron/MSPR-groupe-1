@@ -37,7 +37,8 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
-    'rest_framework_swagger'
+    'rest_framework_swagger',
+    'A_rosa_je_site'
 ]
 
 MIDDLEWARE = [
