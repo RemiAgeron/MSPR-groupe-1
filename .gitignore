@@ -1,10 +1,13 @@
 # Files
 
 # DB Files
-__sqlite3__/
+A_rosa_je/db.sqlite3
+
+# __pycache__ Files
+A_rosa_je/A_rosa_je/__pycache__/
+A_rosa_je/A_rosa_je_site/__pycache__/
 
 # Byte-compiled / optimized / DLL files
-__pycache__/
 *.py[cod]
 *$py.class
 
