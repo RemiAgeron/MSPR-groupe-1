@@ -21,7 +21,6 @@ coreapi==2.3.3
 coreschema==0.0.4
 cryptography==3.4.8
 cssselect==1.1.0
-cupshelpers==1.0
 dbus-python==1.2.18
 dill==0.3.2
 distlib==0.3.6
