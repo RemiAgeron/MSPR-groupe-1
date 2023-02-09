@@ -25,7 +25,6 @@ dbus-python==1.2.18
 dill==0.3.2
 distlib==0.3.6
 distro==1.7.0
-distro-info===1.1build1
 dj-database-url==1.2.0
 Django==3.2.5
 django-on-heroku==1.1.2
