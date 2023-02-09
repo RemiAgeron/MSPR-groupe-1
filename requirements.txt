@@ -1,6 +1,5 @@
 apispec==6.0.0
 appdirs==1.4.4
-apt-xapian-index==0.49
 asgiref==3.6.0
 attrs==21.2.0
 awscli-local==0.20
