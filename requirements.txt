@@ -57,7 +57,6 @@ jmespath==1.0.1
 jsonify==0.5
 jsonschema==3.2.0
 keyring==23.5.0
-language-selector==0.1
 latest==0.6.0
 launchpadlib==1.10.16
 lazr.restfulclient==0.14.4
