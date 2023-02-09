@@ -1,0 +1,31 @@
+:
+:
+:
+HAS_MESSAGE, 11 MESSAGE, 0N CONVERSATION: FKEY id_message, FKEY id_conversation
+CONVERSATION: id
+:
+:
+
+:
+:
+MESSAGE: id, content
+SEND_MESSAGE, 11 MESSAGE, 0N USER: FKEY id_message, FKEY id_user
+START, 0N USER, 22 CONVERSATION: FKEY id_user, FKEY id_conversation
+:
+:
+
+:
+HAS_COMMENT, 0N POST, 11 COMMENT: FKEY id_post, FKEY id_comment
+COMMENT: id, content
+WRITE_COMMENT, 0N USER, 11 COMMENT: FKEY id_user, FKEY id_comment
+USER: id, firstname, lastname, email, password, user_picture, phone, description, role
+IS ?, 11 BOTANIST, 01 USER: FKEY id_user
+BOTANIST: id, address, company_name
+
+PLANT: id, name, description, picture, type
+TAG, 01 POST, 0N PLANT: FKEY id_plant, FKEY id_post
+POST: id, description, picture, date
+ADD, 0N USER, 11 POST: FKEY id_user, FKEY id_post
+WRITE, 0N USER, 11 REVIEW: FKEY id_user, FKEY id_review
+REVIEW: id, address, company_name
+HAVE, 0N BOTANIST, 11 REVIEW: FKEY id_botanist, FKEY id_review
