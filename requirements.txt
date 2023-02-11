@@ -109,7 +109,6 @@ PyGObject==3.42.1
 PyJWT==1.4.2
 pylibacl==0.6.0
 PyMySQL==1.0.2
-pyparsing==2.4.7
 PyQt5==5.15.6
 PyQt5-sip==12.9.1
 pyquery==1.2.9
