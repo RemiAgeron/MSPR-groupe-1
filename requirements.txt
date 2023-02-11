@@ -103,6 +103,7 @@ pylibacl==0.6.0
 PyMySQL==1.0.2
 PyQt5==5.15.6
 PyQt5-sip==12.9.1
+pyparsing==2.4.7
 pyquery==1.2.9
 pyrsistent==0.18.1
 python-apt==2.4.0
