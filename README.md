@@ -34,4 +34,9 @@ Just follow steps !
 ## Useful commands
 
 - Update local database schema : python manage.py migrate
+
+- Make a migrations loccaly : python manage.py makemigrations
+
 - Launch app : python3 manage.py runserver
+
+- Push on Heroku (need commit) : git push heroku main
