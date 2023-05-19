@@ -1,0 +1,103 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model User {
+  id             Int           @id @default(autoincrement())
+  firstname      String
+  lastname       String
+  isAdmin        Boolean       @default(false)
+  email          String        @unique
+  password       String
+  phone          String
+  // user_picture
+  description    String?
+  created_at     DateTime      @default(now())
+  Conversation   Conversation? @relation(fields: [conversationId], references: [id])
+  conversationId Int?
+  Message        Message[]
+  Comment        Comment[]
+  Post           Post[]
+  Botanist       Botanist[]
+  Review         Review[]
+}
+
+model Conversation {
+  id         Int       @id @default(autoincrement())
+  users      User[]
+  messages   Message[]
+  created_at DateTime  @default(now())
+}
+
+// Conversation message
+model Message {
+  id             Int          @id @default(autoincrement())
+  content        String
+  senderId       Int
+  sender         User         @relation(fields: [senderId], references: [id])
+  conversationId Int
+  conversation   Conversation @relation(fields: [conversationId], references: [id])
+  created_at     DateTime     @default(now())
+}
+
+model Post {
+  id         Int       @id @default(autoincrement())
+  title      String
+  content    String
+  // picture   Blob
+  senderId   Int
+  sender     User      @relation(fields: [senderId], references: [id])
+  plantId    Int
+  plant      Plant     @relation(fields: [plantId], references: [id])
+  comments   Comment[]
+  created_at DateTime  @default(now())
+  updated_at DateTime? @updatedAt
+}
+
+// Post comment
+model Comment {
+  id         Int      @id @default(autoincrement())
+  content    String
+  senderId   Int
+  sender     User     @relation(fields: [senderId], references: [id])
+  postId     Int
+  post       Post     @relation(fields: [postId], references: [id])
+  created_at DateTime @default(now())
+}
+
+model Plant {
+  id         Int       @id @default(autoincrement())
+  name       String
+  family     String?
+  genus      String?
+  species    String?
+  created_at DateTime  @default(now())
+  updated_at DateTime? @updatedAt
+  Post       Post[]
+}
+
+// Botanist profile
+model Botanist {
+  id           Int      @id @default(autoincrement())
+  userId       Int
+  user         User     @relation(fields: [userId], references: [id])
+  adress       String
+  company_name String
+  Review       Review[]
+}
+
+// Botanist review by user
+model Review {
+  id         Int      @id @default(autoincrement())
+  content    String
+  senderId   Int
+  sender     User     @relation(fields: [senderId], references: [id])
+  botanistId Int
+  botanist   Botanist @relation(fields: [botanistId], references: [id])
+  created_at DateTime @default(now())
+}

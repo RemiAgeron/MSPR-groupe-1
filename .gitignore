@@ -1,2 +1,9 @@
-env
-env/pyvenv.cfg
+# >>> env >>> # 
+.env
+# <<< env <<< #
+
+# >>> Node >>> #
+node_modules
+package-lock.json
+# <<< Node <<< #
+```
