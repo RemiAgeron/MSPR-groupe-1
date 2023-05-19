@@ -1,0 +1,42 @@
+# Dockerfile for Arosaje project
+# This file is meant to be used for development purposes only
+
+version: '3.9'
+
+services:
+  adminer:
+    container_name: adminer
+    image: adminer
+    restart: on-failure
+    ports:
+      - "8080:8080"
+    depends_on:
+      - db
+    networks:
+      - arosaje-network
+
+  db:
+    container_name: postgres
+    image: postgres:9.6
+    env_file:
+      - ./backend/.env
+    ports:
+      - "5432:5432"
+    volumes:
+      - ./postgres-data:/var/lib/postgresql/data
+    networks:
+      - arosaje-network
+
+  backend:
+    container_name: backend
+    build:
+      context: ./backend
+      dockerfile: Dockerfile
+    restart: on-failure
+    ports:
+      - "5000:5000"
+    networks:
+      - arosaje-network
+
+networks:
+  arosaje-network:

@@ -1,3 +1,8 @@
+# >>> IDE >>> #
+.idea
+.vscode
+# <<< IDE <<< #
+
 # >>> env >>> # 
 .env
 # <<< env <<< #
@@ -6,4 +11,3 @@
 node_modules
 package-lock.json
 # <<< Node <<< #
-```
