@@ -11,3 +11,12 @@
 node_modules
 package-lock.json
 # <<< Node <<< #
+
+# >>> Build >>> #
+build
+dist
+# <<< Build <<< #
+
+# >>> Database >>> #
+postgres-data
+# <<< Database <<< #

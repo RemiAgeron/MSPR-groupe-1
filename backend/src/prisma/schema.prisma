@@ -7,70 +7,70 @@ datasource db {
   url      = env("DATABASE_URL")
 }
 
-model User {
-  id             Int           @id @default(autoincrement())
+model users {
+  id             Int            @id @default(autoincrement())
+  isAdmin        Boolean        @default(false)
   firstname      String
   lastname       String
-  isAdmin        Boolean       @default(false)
-  email          String        @unique
+  email          String         @unique
   password       String
   phone          String
-  // user_picture
   description    String?
-  created_at     DateTime      @default(now())
-  Conversation   Conversation? @relation(fields: [conversationId], references: [id])
+  // user_picture
+  created_at     DateTime       @default(now())
+  Conversation   conversations? @relation(fields: [conversationId], references: [id])
   conversationId Int?
-  Message        Message[]
-  Comment        Comment[]
-  Post           Post[]
-  Botanist       Botanist[]
-  Review         Review[]
+  Message        messages[]
+  Comment        comments[]
+  Post           posts[]
+  Botanist       botanists[]
+  Review         reviews[]
 }
 
-model Conversation {
-  id         Int       @id @default(autoincrement())
-  users      User[]
-  messages   Message[]
-  created_at DateTime  @default(now())
+model conversations {
+  id         Int        @id @default(autoincrement())
+  users      users[]
+  messages   messages[]
+  created_at DateTime   @default(now())
 }
 
 // Conversation message
-model Message {
-  id             Int          @id @default(autoincrement())
+model messages {
+  id             Int           @id @default(autoincrement())
   content        String
   senderId       Int
-  sender         User         @relation(fields: [senderId], references: [id])
+  sender         users         @relation(fields: [senderId], references: [id])
   conversationId Int
-  conversation   Conversation @relation(fields: [conversationId], references: [id])
-  created_at     DateTime     @default(now())
+  conversation   conversations @relation(fields: [conversationId], references: [id])
+  created_at     DateTime      @default(now())
 }
 
-model Post {
-  id         Int       @id @default(autoincrement())
+model posts {
+  id         Int        @id @default(autoincrement())
   title      String
   content    String
   // picture   Blob
   senderId   Int
-  sender     User      @relation(fields: [senderId], references: [id])
+  sender     users      @relation(fields: [senderId], references: [id])
   plantId    Int
-  plant      Plant     @relation(fields: [plantId], references: [id])
-  comments   Comment[]
-  created_at DateTime  @default(now())
-  updated_at DateTime? @updatedAt
+  plant      plants     @relation(fields: [plantId], references: [id])
+  comments   comments[]
+  created_at DateTime   @default(now())
+  updated_at DateTime?  @updatedAt
 }
 
 // Post comment
-model Comment {
+model comments {
   id         Int      @id @default(autoincrement())
   content    String
   senderId   Int
-  sender     User     @relation(fields: [senderId], references: [id])
+  sender     users    @relation(fields: [senderId], references: [id])
   postId     Int
-  post       Post     @relation(fields: [postId], references: [id])
+  post       posts    @relation(fields: [postId], references: [id])
   created_at DateTime @default(now())
 }
 
-model Plant {
+model plants {
   id         Int       @id @default(autoincrement())
   name       String
   family     String?
@@ -78,26 +78,26 @@ model Plant {
   species    String?
   created_at DateTime  @default(now())
   updated_at DateTime? @updatedAt
-  Post       Post[]
+  Post       posts[]
 }
 
 // Botanist profile
-model Botanist {
-  id           Int      @id @default(autoincrement())
+model botanists {
+  id           Int       @id @default(autoincrement())
   userId       Int
-  user         User     @relation(fields: [userId], references: [id])
+  user         users     @relation(fields: [userId], references: [id])
   adress       String
   company_name String
-  Review       Review[]
+  reviews      reviews[]
 }
 
 // Botanist review by user
-model Review {
-  id         Int      @id @default(autoincrement())
+model reviews {
+  id         Int       @id @default(autoincrement())
   content    String
   senderId   Int
-  sender     User     @relation(fields: [senderId], references: [id])
+  sender     users     @relation(fields: [senderId], references: [id])
   botanistId Int
-  botanist   Botanist @relation(fields: [botanistId], references: [id])
-  created_at DateTime @default(now())
+  botanist   botanists @relation(fields: [botanistId], references: [id])
+  created_at DateTime  @default(now())
 }
