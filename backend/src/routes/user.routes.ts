@@ -1,12 +1,13 @@
 import router = require('express');
 import userController = require('../controllers/user.controller');
-// import { authentificateToken, checkAdmin } from "../middleware/auth.middleware";
+import authController = require('../controllers/auth.controller');
+import { checkJwtToken } from "../middlewares/auth.middleware";
 
 export const userRoutes = router.Router();
 
 userRoutes.post("/login", authController.login);
-userRoutes.post("/register", checkAdmin, userController.createUser);
-userRoutes.get("/", checkAdmin, userController.getUsers);
-userRoutes.get("/:id", authentificateToken, userController.getUser);
-userRoutes.patch("/:id", authentificateToken, userController.updateUser);
-userRoutes.delete("/:id", checkAdmin, userController.deleteUser);
+userRoutes.post("/register", authController.register);
+userRoutes.get("/", userController.getUsers);
+userRoutes.get("/:id", checkJwtToken, userController.getUser);
+userRoutes.patch("/:id", checkJwtToken, userController.updateUser);
+userRoutes.delete("/:id", userController.deleteUser);

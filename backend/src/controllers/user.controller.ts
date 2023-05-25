@@ -1,6 +1,8 @@
 import { PrismaClient } from '@prisma/client';
 import { Request, Response } from 'express';
 
+import ErrorUtils from '../utils/error.utils';
+
 const prisma = new PrismaClient().users;
 
 // GET /api/user
@@ -8,9 +10,9 @@ const prisma = new PrismaClient().users;
 export const getUsers = async (req: Request, res: Response) => {
   try {
     const users = await prisma.findMany();
-    res.status(200).json(users);
-  } catch (error: any) {
-    res.status(500).json({ error: error.message });
+    return res.status(200).json(users);
+  } catch (error) {
+    return ErrorUtils.getError(error, res);
   }
 };
 
@@ -26,12 +28,12 @@ export const getUser = async (req: Request, res: Response) => {
       },
     });
     if (!user) {
-      return res.status(404).json({ error: 'User not found' });
+      return ErrorUtils.getNotFoundError(res);
     } else {
       return res.status(200).json(user);
     }
-  } catch (error: any) {
-    res.status(500).json({ error: error.message });
+  } catch (error) {
+    return ErrorUtils.getError(error, res);
   }
 };
 
@@ -61,8 +63,8 @@ export const updateUser = async (req: Request, res: Response) => {
         return res.status(200).json(user);
       }
     }
-  } catch (error: any) {
-    res.status(500).json({ error: error.message });
+  } catch (error) {
+    return ErrorUtils.getError(error, res);
   }
 };
 
@@ -77,35 +79,11 @@ export const deleteUser = async (req: Request, res: Response) => {
       },
     });
     if (!user) {
-      return res.status(404).json({ error: 'User not found' });
+      return ErrorUtils.getNotFoundError(res);
     } else {
       return res.status(200).json(user);
     }
-  } catch (error: any) {
-    res.status(500).json({ error: error.message });
-  }
-};
-
-// PATCH /api/user/role/:id
-// Update user role by id
-export const updateRole = async (req: Request, res: Response) => {
-  try {
-    const { id } = req.params;
-    const { isAdmin } = req.body;
-    const user = await prisma.update({
-      where: {
-        id: parseInt(id),
-      },
-      data: {
-        isAdmin: isAdmin,
-      },
-    });
-    if (!user) {
-      return res.status(404).json({ error: 'User not found' });
-    } else {
-      return res.status(200).json(user);
-    }
-  } catch (error: any) {
-    res.status(500).json({ error: error.message });
+  } catch (error) {
+    return ErrorUtils.getError(error, res);
   }
 };
