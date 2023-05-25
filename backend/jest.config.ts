@@ -45,7 +45,7 @@ const config: Config = {
   ],
   rootDir: rootDirector,
   roots: [rootDirector],
-  setupFilesAfterEnv: [`${rootDirector}/__tests__/setup.ts`],
+  // setupFilesAfterEnv: [`${rootDirector}/__tests__/setup.ts`],
   testPathIgnorePatterns: [
     '/node_modules/',
     '<rootDir>/build',

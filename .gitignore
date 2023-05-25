@@ -1,22 +1,21 @@
 # >>> IDE >>> #
 .idea
 .vscode
-# <<< IDE <<< #
 
 # >>> env >>> # 
 .env
-# <<< env <<< #
 
 # >>> Node >>> #
 node_modules
 package-lock.json
-# <<< Node <<< #
 
 # >>> Build >>> #
 build
 dist
-# <<< Build <<< #
 
 # >>> Database >>> #
 postgres-data
-# <<< Database <<< #
+
+# >>> Keys >>> #
+private.pem
+public.pem
