@@ -1,29 +1,36 @@
 # MSPR Arosaje
 
+Ce projet est un projet d'étude pour le bachelor concepteur et développeur d'application de l'EPSI.
+
 ## Installation
+
+### Prérequis
+
+- Docker
+- Docker-compose
+- NodeJS
+- NPM
+
+### Développement
 
 Démarrer les conteneurs avec :
 
 ```bash
 docker-compose up --build
 ```
-Puis installer les paquets et initialiser la BDD avec :
+#### Backend
+
+Installer les paquets et initialiser la BDD :
 
 ```bash
 make backend-init
 ```
 
-### Backend
+Visualiser les données de la BDD :
 
-Lancer le serveur de développement avec :
+Utiliser **Adminer** à l'adresse http://localhost:5555 ou utiliser **Prisma Studio** :
+
 ```bash
-npm run dev
+docker-compose exec backend npx prisma studio
 ```
 
-### Frontend
-
-TODO
-
-### Mobile
-
-TODO
