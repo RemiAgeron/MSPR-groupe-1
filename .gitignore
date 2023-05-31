@@ -1,2 +1,21 @@
-env
-env/pyvenv.cfg
+# >>> IDE >>> #
+.idea
+.vscode
+
+# >>> env >>> # 
+.env
+
+# >>> Node >>> #
+node_modules
+package-lock.json
+
+# >>> Build >>> #
+build
+dist
+
+# >>> Database >>> #
+postgres-data
+
+# >>> Keys >>> #
+private.pem
+public.pem

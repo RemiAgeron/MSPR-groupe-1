@@ -1,42 +1,36 @@
-# Install Environment and dependances
+# MSPR Arosaje
 
-Just follow steps !
+Ce projet est un projet d'étude pour le bachelor concepteur et développeur d'application de l'EPSI.
 
+## Installation
 
-## Linux :
+### Prérequis
 
-- Create env : python3 -m venv env
+- Docker
+- Docker-compose
+- NodeJS
+- NPM
 
-- Select it : source env/bin/activate
+### Développement
 
-- (See Dependances : python -m pip list)
+Démarrer les conteneurs avec :
 
-- (List them for requirements.txt : python -m pip freeze)
+```bash
+docker-compose up --build
+```
+#### Backend
 
-- Install requirements.txt : python -m pip install -r requirements.txt
+Installer les paquets et initialiser la BDD :
 
-- Let's try : python3 manage.py runserver
+```bash
+make backend-init
+```
 
-## Windows
+Visualiser les données de la BDD :
 
-- Create env : python3 -m venv env
+Utiliser **Adminer** à l'adresse http://localhost:5555 ou utiliser **Prisma Studio** :
 
-- Select it : source env/bin/activate
+```bash
+docker-compose exec backend npx prisma studio
+```
 
-- (See Dependances : python -m pip list)
-
-- (List them for requirements.txt : python -m pip freeze)
-
-- Install requirements.txt : python -m pip install -r requirements.txt
-
-- Let's try : python3 manage.py runserver
-
-## Useful commands
-
-- Update local database schema : python manage.py migrate
-
-- Make a migrations loccaly : python manage.py makemigrations
-
-- Launch app : python3 manage.py runserver
-
-- Push on Heroku (need commit) : git push heroku main
