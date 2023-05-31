@@ -11,6 +11,6 @@ botanistRoutes.get(
   checkJwtToken,
   botanistController.getBotanistByUser,
 );
-// botanistRoutes.post('/', checkJwtToken, botanistController.createBotanist);
-// botanistRoutes.patch('/:id', checkJwtToken, botanistController.updateBotanist);
-// botanistRoutes.delete('/:id', botanistController.deleteBotanist);
+botanistRoutes.post('/', checkJwtToken, botanistController.createBotanist);
+botanistRoutes.patch('/:id', checkJwtToken, botanistController.updateBotanist);
+botanistRoutes.delete('/:id', checkJwtToken, botanistController.deleteBotanist);

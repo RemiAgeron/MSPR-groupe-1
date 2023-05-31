@@ -64,6 +64,7 @@ model posts {
 model comments {
   id         Int      @id @default(autoincrement())
   content    String
+  tags       String
   senderId   Int
   sender     users    @relation(fields: [senderId], references: [id])
   postId     Int
