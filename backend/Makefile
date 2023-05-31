@@ -2,7 +2,7 @@
 
 .PHONY: help
 
-start: up install schema migrate seed ## Start the application
+start: up install schema migrate ## Start the application
 
 up: ## Start the application
 	@echo "Starting the application..."
