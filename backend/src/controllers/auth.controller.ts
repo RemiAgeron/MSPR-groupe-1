@@ -19,7 +19,6 @@ const generateAccessToken = (id: number) => {
   return jwt.sign({ id: id }, process.env.TOKEN_SECRET!, { expiresIn: '24h' });
 };
 
-
 // POST /api/user/login
 // Login user
 export const login = async (req: Request, res: Response) => {
@@ -43,7 +42,7 @@ export const login = async (req: Request, res: Response) => {
           return ErrorUtils.createError(res, 401, 'Wrong password');
         } else {
           const token = generateAccessToken(user.id);
-          return res.status(200).json({ token: token });
+          return res.status(200).json({ id: user.id, token: token });
         }
       }
     }
@@ -82,8 +81,9 @@ export const register = async (req: Request, res: Response) => {
         if (!newUser) {
           throw new Error('Error creating user');
         } else {
-          const token = generateAccessToken(newUser.id); 
-          return res.status(201).json({ token: token });
+          const token = generateAccessToken(newUser.id);
+
+          return res.status(201).json({ id: newUser.id, token: token });
         }
       }
     }
@@ -91,4 +91,3 @@ export const register = async (req: Request, res: Response) => {
     return ErrorUtils.getError(error, res);
   }
 };
-

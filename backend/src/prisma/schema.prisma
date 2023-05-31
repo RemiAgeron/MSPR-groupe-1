@@ -85,7 +85,7 @@ model plants {
 // Botanist profile
 model botanists {
   id           Int       @id @default(autoincrement())
-  userId       Int
+  userId       Int       @unique
   user         users     @relation(fields: [userId], references: [id])
   adress       String
   company_name String

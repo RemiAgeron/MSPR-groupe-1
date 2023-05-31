@@ -37,7 +37,7 @@ export const getUser = async (req: Request, res: Response) => {
   }
 };
 
-// PATCH /api/user/:id
+// FIXME : PATCH /api/user/:id
 // Update user by id
 export const updateUser = async (req: Request, res: Response) => {
   try {
@@ -47,21 +47,44 @@ export const updateUser = async (req: Request, res: Response) => {
     if (!firstname && !lastname && !email && !phone && !description) {
       return res.status(400).json({ error: 'Missing fields' });
     } else {
-      const user = await prisma.update({
+
+      const checkUser = await prisma.findUnique({
         where: {
           id: parseInt(id),
         },
-        data: {
-          firstname: firstname,
-          lastname: lastname,
-          email: email,
-        },
       });
-      if (!user) {
+      if (!checkUser) {
         return res.status(404).json({ error: 'User not found' });
       } else {
-        return res.status(200).json(user);
-      }
+        let data = {};
+        if (firstname) {
+          data = { ...data, firstname: firstname };
+        }
+        if (lastname) {
+          data = { ...data, lastname: lastname };
+        }
+        if (email) {
+          data = { ...data, email: email };
+        }
+        if (phone) {
+          data = { ...data, phone: phone };
+        }
+        if (description) {
+          data = { ...data, description: description };
+        }
+        
+        if(Object.keys(data).length !== 0) {
+          const user = await prisma.update({
+            where: {
+              id: parseInt(id),
+            },
+            data: data,
+          });
+          return res.status(200).json(user);
+        } else {
+          return res.status(400).json({ error: 'Missing fields' });
+        }
+      } 
     }
   } catch (error) {
     return ErrorUtils.getError(error, res);
