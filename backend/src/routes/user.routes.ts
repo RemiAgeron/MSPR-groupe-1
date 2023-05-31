@@ -7,7 +7,7 @@ export const userRoutes = router.Router();
 
 userRoutes.post("/login", authController.login);
 userRoutes.post("/register", authController.register);
-userRoutes.get("/", userController.getUsers);
+userRoutes.get("/", checkJwtToken, userController.getUsers);
 userRoutes.get("/:id", checkJwtToken, userController.getUser);
 userRoutes.patch("/:id", checkJwtToken, userController.updateUser);
-userRoutes.delete("/:id", userController.deleteUser);
+userRoutes.delete("/:id", checkJwtToken, userController.deleteUser);

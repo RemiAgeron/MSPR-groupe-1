@@ -2,7 +2,6 @@ import { PrismaClient } from '@prisma/client';
 import { Request, Response } from 'express';
 
 import ErrorUtils from '../utils/error.utils';
-import { PassThrough } from 'stream';
 
 const prisma = new PrismaClient().botanists;
 
@@ -46,9 +45,9 @@ export const getBotanistByUser = async (req: Request, res: Response) => {
   try {
     const { userId } = req.params;
 
-    const user = await prisma.findUnique({
+    const user = await prisma.findMany({
       where: {
-        // userId: parseInt(userId),
+        userId: parseInt(userId),
       },
     });
     if (!user) {
@@ -73,6 +72,7 @@ export const createBotanist = async (req: Request, res: Response) => {
 
 // TODO :  PATCH /api/botanist/:id
 // Update botanist by id
+
 
 // TODO :  DELETE /api/botanist/:id
 // Delete botanist by id
