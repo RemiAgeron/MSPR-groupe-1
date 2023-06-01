@@ -14,9 +14,19 @@ down: ## Stop the application
 
 restart: down up ## Restart the application
 
+reload-schema: validate-schema schema migrate ## Reload the schema
+
 install: ## Install dependencies
 	@echo "Installing app dependencies..."
 	docker-compose exec backend npm install
+
+studio: ## Open prisma studio
+	@echo "Opening prisma studio"
+	docker-compose exec backend npx prisma studio
+
+validate-schema: ## Validate schema
+	@echo "Validating schema"
+	docker-compose exec backend npx prisma validate
 
 schema: ## Generate bdd schema
 	@echo "Linking bdd"
