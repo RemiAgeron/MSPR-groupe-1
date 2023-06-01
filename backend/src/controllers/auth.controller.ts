@@ -47,7 +47,7 @@ export const login = async (req: Request, res: Response) => {
       }
     }
   } catch (error) {
-    return ErrorUtils.getError(error, res);
+    return ErrorUtils.customError(error, res);
   }
 };
 
@@ -79,7 +79,7 @@ export const register = async (req: Request, res: Response) => {
           },
         });
         if (!newUser) {
-          throw new Error('Error creating user');
+          return res.status(400).json({ error: 'Error when creating user' });
         } else {
           const token = generateAccessToken(newUser.id);
 
@@ -88,6 +88,6 @@ export const register = async (req: Request, res: Response) => {
       }
     }
   } catch (error) {
-    return ErrorUtils.getError(error, res);
+    return ErrorUtils.customError(error, res);
   }
 };

@@ -18,4 +18,4 @@ commentRoutes.get(
 );
 commentRoutes.post('/', checkJwtToken, commentController.createComment);
 commentRoutes.patch('/:id', checkJwtToken, commentController.updateComment);
-commentRoutes.delete('/:id', commentController.deleteComment);
+commentRoutes.delete('/:id', checkJwtToken, commentController.deleteComment);

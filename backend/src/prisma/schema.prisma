@@ -9,17 +9,17 @@ datasource db {
 }
 
 model users {
-  id             Int            @id @default(autoincrement())
-  isAdmin        Boolean        @default(false)
+  id             Int             @id @default(autoincrement())
+  isAdmin        Boolean         @default(false)
   firstname      String
   lastname       String
-  email          String         @unique
+  email          String          @unique
   password       String
   phone          String?
   description    String?
   // user_picture
-  created_at     DateTime       @default(now())
-  Conversation   conversations? @relation(fields: [conversationId], references: [id])
+  created_at     DateTime        @default(now())
+  Conversation   conversations[]
   conversationId Int?
   Message        messages[]
   Comment        comments[]
@@ -46,15 +46,17 @@ model messages {
   created_at     DateTime      @default(now())
 }
 
+// TODO: add picture
 model posts {
   id         Int        @id @default(autoincrement())
   title      String
   content    String
+  tags       String?
   // picture   Blob
   senderId   Int
   sender     users      @relation(fields: [senderId], references: [id])
-  plantId    Int
-  plant      plants     @relation(fields: [plantId], references: [id])
+  plantId    Int?
+  plant      plants?     @relation(fields: [plantId], references: [id])
   comments   comments[]
   created_at DateTime   @default(now())
   updated_at DateTime?  @updatedAt
@@ -64,7 +66,6 @@ model posts {
 model comments {
   id         Int      @id @default(autoincrement())
   content    String
-  tags       String
   senderId   Int
   sender     users    @relation(fields: [senderId], references: [id])
   postId     Int

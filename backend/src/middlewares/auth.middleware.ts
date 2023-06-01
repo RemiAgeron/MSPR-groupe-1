@@ -29,7 +29,7 @@ export const checkJwtToken = (
     next();
   } catch (error) {
     // return res.status(403).json({ error: 'Forbidden' });
-    return ErrorUtils.getError(error, res);
+    return ErrorUtils.customError(error, res);
   }
 };
 
