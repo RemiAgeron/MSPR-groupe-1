@@ -37,11 +37,11 @@ export const getComment = async (req: Request, res: Response) => {
   }
 };
 
-// TODO : GET /api/comment/user/:id
+// GET /api/comment/user/:id
 // Get comment by user id
 export const getCommentByUser = async (req: Request, res: Response) => {
   try {
-    const { senderId } = req.params;
+    const senderId = req.params.id;
 
     const user = await prisma.findMany({
       where: {
@@ -58,11 +58,11 @@ export const getCommentByUser = async (req: Request, res: Response) => {
   }
 };
 
-//GET /api/comment/post/:id
-//Get comment by post id
+// GET /api/comment/post/:id
+// Get comment by post id
 export const getCommentByPost = async (req: Request, res: Response) => {
   try {
-    const { postId } = req.params;
+    const postId = req.params.id;
 
     const post = await prisma.findMany({
       where: {
@@ -79,8 +79,8 @@ export const getCommentByPost = async (req: Request, res: Response) => {
   }
 };
 
-//POST /api/comment
-//Create comment
+// POST /api/comment
+// Create comment
 export const createComment = async (req: Request, res: Response) => {
   try {
     const { content, senderId, postId } = req.body;
@@ -98,8 +98,8 @@ export const createComment = async (req: Request, res: Response) => {
   }
 };
 
-//PUT /api/comment/:id
-//Update comment
+// FIXME: PUT /api/comment/:id
+// Update comment
 export const updateComment = async (req: Request, res: Response) => {
   try {
     const { id } = req.params;
@@ -121,8 +121,8 @@ export const updateComment = async (req: Request, res: Response) => {
   }
 };
 
-//DELETE /api/comment/:id
-//Delete comment
+// FIXME: DELETE /api/comment/:id
+// Delete comment
 export const deleteComment = async (req: Request, res: Response) => {
   try {
     const { id } = req.params;

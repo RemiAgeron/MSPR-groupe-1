@@ -42,14 +42,14 @@ export const getPost = async (req: Request, res: Response) => {
 // Get post by user id
 export const getPostsByUser = async (req: Request, res: Response) => {
   try {
-    const { senderId } = req.params;
+    const senderId = req.params.id;
 
     const posts = await prismaPosts.findMany({
       where: {
         senderId: parseInt(senderId),
       },
     });
-    if (!posts) {
+    if (posts.length === 0) {
       return ErrorUtils.getNotFoundError(res);
     } else {
       return res.status(200).json(posts);
