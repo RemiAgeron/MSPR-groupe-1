@@ -103,7 +103,9 @@ export const createComment = async (req: Request, res: Response) => {
 export const updateComment = async (req: Request, res: Response) => {
   try {
     const { id } = req.params;
-    const { content, senderId, postId } = req.body;
+    const { content } = req.body;
+
+    if (!content) return ErrorUtils.getMissingFieldsError(res);
 
     const comment = await prisma.update({
       where: {
@@ -111,8 +113,6 @@ export const updateComment = async (req: Request, res: Response) => {
       },
       data: {
         content: content,
-        senderId: senderId,
-        postId: postId,
       },
     });
     return res.status(200).json(comment);
@@ -127,12 +127,12 @@ export const deleteComment = async (req: Request, res: Response) => {
   try {
     const { id } = req.params;
 
-    await prisma.delete({
+    const comment = await prisma.delete({
       where: {
         id: parseInt(id),
       },
     });
-    return res.status(200).json({ message: 'Comment deleted successfully' });
+    return res.status(200).json({ message: 'Comment deleted successfully', comment });
   } catch (error) {
     return ErrorUtils.customError(error, res);
   }

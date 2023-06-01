@@ -1,9 +1,9 @@
-// import { PrismaClient } from '@prisma/client';
-// import { Request, Response } from 'express';
+import { PrismaClient } from '@prisma/client';
+import { Request, Response } from 'express';
 
-// import ErrorUtils from '../utils/error.utils';
+import ErrorUtils from '../utils/error.utils';
 
-// const prisma = new PrismaClient().users;
+const prisma = new PrismaClient().users;
 
 // //GET /api/conversation
 // //Get all conversations
@@ -96,19 +96,21 @@
 //     }
 // }
 
-// //DELETE /api/conversation/:id
-// //Delete conversation
-// export const deleteConversation = async (req: Request, res: Response) => {
-//     try {
-//         const { id } = req.params;
+//DELETE /api/conversation/:id
+//Delete conversation
+export const deleteConversation = async (req: Request, res: Response) => {
+  try {
+    const { id } = req.params;
 
-//         await prisma.delete({
-//             where: {
-//                 id: parseInt(id),
-//             },
-//         });
-//         return res.status(204).send();
-//     } catch (error) {
-//         return ErrorUtils.customError(error, res);
-//     }
-// }
+    const conversation = await prisma.delete({
+      where: {
+        id: parseInt(id),
+      },
+    });
+    return res
+      .status(200)
+      .send({ message: 'Conversation deleted successfully', conversation });
+  } catch (error) {
+    return ErrorUtils.customError(error, res);
+  }
+};

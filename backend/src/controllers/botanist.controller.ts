@@ -103,36 +103,36 @@ export const updateBotanist = async (req: Request, res: Response) => {
     const { id } = req.params;
     const { adress, company_name } = req.body;
 
-      const checkBotanist = await prisma.findUnique({
-        where: {
-          id: parseInt(id),
-        },
-      });
+    const checkBotanist = await prisma.findUnique({
+      where: {
+        id: parseInt(id),
+      },
+    });
 
-      if (!checkBotanist) {
-        return res.status(404).json({ error: 'Botanist not found' });
-      } else {
-        let data = {};
-        if (adress) {
-          data = { ...data, adress: adress };
-        }
-        if (company_name) {
-          data = { ...data, company_name: company_name };
-        }
-
-        if (Object.keys(data).length > 0) {
-          const botanist = await prisma.update({
-            where: {
-              id: parseInt(id),
-            },
-            data: data,
-          });
-          return res.status(200).json(botanist);
-        } else {
-          return res.status(400).json({ error: 'Missing fields' });
-        }
+    if (!checkBotanist) {
+      return res.status(404).json({ error: 'Botanist not found' });
+    } else {
+      let data = {};
+      if (adress) {
+        data = { ...data, adress: adress };
       }
-    } catch (error) {
+      if (company_name) {
+        data = { ...data, company_name: company_name };
+      }
+
+      if (Object.keys(data).length > 0) {
+        const botanist = await prisma.update({
+          where: {
+            id: parseInt(id),
+          },
+          data: data,
+        });
+        return res.status(200).json(botanist);
+      } else {
+        return res.status(400).json({ error: 'Missing fields' });
+      }
+    }
+  } catch (error) {
     return ErrorUtils.customError(error, res);
   }
 };
@@ -156,9 +156,11 @@ export const deleteBotanist = async (req: Request, res: Response) => {
           id: parseInt(id),
         },
       });
-      return res.status(200).json(botanist);
+      return res
+        .status(200)
+        .json({ message: 'Botanist deleted successfully', botanist });
     }
   } catch (error) {
     return ErrorUtils.customError(error, res);
   }
-}
+};
