@@ -37,7 +37,7 @@ export const getUser = async (req: Request, res: Response) => {
   }
 };
 
-// FIXME : PATCH /api/user/:id
+// PATCH /api/user/:id
 // Update user by id
 export const updateUser = async (req: Request, res: Response) => {
   try {

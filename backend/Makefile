@@ -6,7 +6,7 @@ start: up install schema migrate ## Start the application
 
 up: ## Start the application
 	@echo "Starting the application..."
-	docker-compose up -d
+	docker-compose up --build --detach
 
 down: ## Stop the application
 	@echo "Stopping the application..."

@@ -46,7 +46,7 @@ model messages {
   created_at     DateTime      @default(now())
 }
 
-// TODO: add picture
+// TODO: store picture
 model posts {
   id         Int        @id @default(autoincrement())
   title      String
@@ -55,8 +55,6 @@ model posts {
   // picture   Blob
   senderId   Int
   sender     users      @relation(fields: [senderId], references: [id])
-  plantId    Int?
-  plant      plants?     @relation(fields: [plantId], references: [id])
   comments   comments[]
   created_at DateTime   @default(now())
   updated_at DateTime?  @updatedAt
@@ -81,7 +79,6 @@ model plants {
   species    String?
   created_at DateTime  @default(now())
   updated_at DateTime? @updatedAt
-  Post       posts[]
 }
 
 // Botanist profile

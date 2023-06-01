@@ -3,116 +3,145 @@ import { Request, Response } from 'express';
 
 import ErrorUtils from '../utils/error.utils';
 
-const prisma = new PrismaClient().users;
-
+const prismaPosts = new PrismaClient().posts;
+const prismaUser = new PrismaClient().user;
 //GET /api/post
 //Get all posts
 export const getPosts = async (req: Request, res: Response) => {
-    try {
-        const posts = await prisma.findMany();
-        return res.status(200).json(posts);
-    } catch (error) {
-        return ErrorUtils.getError(error, res);
-    }
-}
+  try {
+    const posts = await prismaPosts.findMany();
+    return res.status(200).json(posts);
+  } catch (error) {
+    return ErrorUtils.customError(error, res);
+  }
+};
 
 //GET /api/post/:id
 //Get post by id
 export const getPost = async (req: Request, res: Response) => {
-    try {
-        const { id } = req.params;
+  try {
+    const { id } = req.params;
 
-        const post = await prisma.findUnique({
-            where: {
-                id: parseInt(id),
-            },
-        });
-        if (!post) {
-            return ErrorUtils.getNotFoundError(res);
-        } else {
-            return res.status(200).json(post);
-        }
-    } catch (error) {
-        return ErrorUtils.getError(error, res);
+    const post = await prismaPosts.findUnique({
+      where: {
+        id: parseInt(id),
+      },
+    });
+    if (!post) {
+      return ErrorUtils.getNotFoundError(res);
+    } else {
+      return res.status(200).json(post);
     }
-}
+  } catch (error) {
+    return ErrorUtils.customError(error, res);
+  }
+};
 
 //GET /api/post/user/:id
 //Get post by user id
 export const getPostsByUser = async (req: Request, res: Response) => {
-    try {
-        const { userId } = req.params;
+  try {
+    const { senderId } = req.params;
 
-        const user = await prisma.findUnique({
-            where: {
-                userId: parseInt(userId),
-            },
-        });
-        if (!user) {
-            return ErrorUtils.getNotFoundError(res);
-        } else {
-            return res.status(200).json(user);
-        }
-    } catch (error) {
-        return ErrorUtils.getError(error, res);
+    const posts = await prismaPosts.findMany({
+      where: {
+        senderId: parseInt(senderId),
+      },
+    });
+    if (!posts) {
+      return ErrorUtils.getNotFoundError(res);
+    } else {
+      return res.status(200).json(posts);
     }
-}
+  } catch (error) {
+    return ErrorUtils.customError(error, res);
+  }
+};
 
-//POST /api/post
+// TODO: POST /api/post
 //Create post
 export const createPost = async (req: Request, res: Response) => {
-    try {
-        const { title, content, userId } = req.body;
+  try {
+    const { title, content, senderId } = req.body;
 
-        const post = await prisma.create({
-            data: {
-                title,
-                content,
-                userId: parseInt(userId),
-            },
-        });
-        return res.status(201).json(post);
-    } catch (error) {
-        return ErrorUtils.getError(error, res);
-    }
-}
+    if(!title || !content || !senderId) {
+      return res.status(400).json({message: "Missing fields"})
+    } 
 
-//PATCH /api/post/:id
+    const data = {
+      title: title,
+      content: content,
+      sender: {
+        connect: {
+          id: parseInt(senderId),
+        },
+      },
+    };
+    
+    // if (tags) {
+    //   data = { ...data, tags: tags } as {
+    //     title: string;
+    //     content: string;
+    //     sender: {
+    //       connect: {
+    //         id: number;
+    //     }
+    //     [key: string]: any;
+    //   };
+    // }
+
+    const post = await prismaPosts.create({
+      data: {
+        title: title,
+        content: content,
+        sender: {
+          connect: {
+            id: parseInt(senderId),
+          },
+        },
+      }
+    });
+    return res.status(201).json(post);
+  } catch (error) {
+    return ErrorUtils.customError(error, res);
+  }
+};
+
+// TODO:PATCH /api/post/:id
 //Update post
 export const updatePost = async (req: Request, res: Response) => {
-    try {
-        const { id } = req.params;
-        const { title, content } = req.body;
+  try {
+    const { id } = req.params;
+    const { title, content } = req.body;
 
-        const post = await prisma.update({
-            where: {
-                id: parseInt(id),
-            },
-            data: {
-                title,
-                content,
-            },
-        });
-        return res.status(200).json(post);
-    } catch (error) {
-        return ErrorUtils.getError(error, res);
-    }
-}
+    const post = await prismaPosts.update({
+      where: {
+        id: parseInt(id),
+      },
+      data: {
+        title: title,
+        content: content,
+      },
+    });
+    return res.status(200).json(post);
+  } catch (error) {
+    return ErrorUtils.customError(error, res);
+  }
+};
 
-//DELETE /api/post/:id
+// TODO: DELETE /api/post/:id
 //Delete post
 export const deletePost = async (req: Request, res: Response) => {
-    try {
-        const { id } = req.params;
+  try {
+    const { id } = req.params;
 
-        const post = await prisma.delete({
-            where: {
-                id: parseInt(id),
-            },
-        });
-        return res.status(200).json(post);
-    } catch (error) {
-        return ErrorUtils.getError(error, res);
-    }
-}
-
+    const post = await prismaPosts.delete({
+      where: {
+        id: parseInt(id),
+      },
+    });
+    return res.status(200).json(post);
+  } catch (error) {
+    return ErrorUtils.customError(error, res);
+  }
+};
