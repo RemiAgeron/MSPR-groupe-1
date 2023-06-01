@@ -5,8 +5,6 @@ import ErrorUtils from '../utils/error.utils';
 
 const prisma = new PrismaClient().botanists;
 
-// TODO : handle tags
-
 // GET /api/botanist
 // Get all botanists
 export const getBotanists = async (req: Request, res: Response) => {
