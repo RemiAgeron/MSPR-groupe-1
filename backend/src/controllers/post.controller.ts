@@ -4,7 +4,8 @@ import { Request, Response } from 'express';
 import ErrorUtils from '../utils/error.utils';
 
 const prismaPosts = new PrismaClient().posts;
-const prismaUser = new PrismaClient().user;
+const prismaUser = new PrismaClient().users;
+
 //GET /api/post
 //Get all posts
 export const getPosts = async (req: Request, res: Response) => {
@@ -62,13 +63,19 @@ export const getPostsByUser = async (req: Request, res: Response) => {
 //Create post
 export const createPost = async (req: Request, res: Response) => {
   try {
-    const { title, content, senderId } = req.body;
+    const { title, content, senderId, tags } = req.body;
 
-    if(!title || !content || !senderId) {
-      return res.status(400).json({message: "Missing fields"})
-    } 
+    if (!title || !content || !senderId) {
+      return res.status(400).json({ message: 'Missing fields' });
+    }
 
-    const data = {
+    const user = await prismaUser.findUnique({ where: { id: senderId } });
+
+    if (!user) {
+      return res.status(404).json({ message: 'User not found' });
+    }
+
+    let data = {
       title: title,
       content: content,
       sender: {
@@ -77,31 +84,25 @@ export const createPost = async (req: Request, res: Response) => {
         },
       },
     };
-    
-    // if (tags) {
-    //   data = { ...data, tags: tags } as {
-    //     title: string;
-    //     content: string;
-    //     sender: {
-    //       connect: {
-    //         id: number;
-    //     }
-    //     [key: string]: any;
-    //   };
-    // }
 
-    const post = await prismaPosts.create({
-      data: {
-        title: title,
-        content: content,
+    if (tags !== null && tags !== undefined) {
+      data = { ...data, tags: tags } as {
+        title: string;
+        content: string;
+        [key: string]: unknown;
         sender: {
           connect: {
-            id: parseInt(senderId),
-          },
-        },
-      }
+            id: number;
+          };
+        };
+      };
+    }
+
+    const post = await prismaPosts.create({
+      data,
     });
-    return res.status(201).json(post);
+
+      return res.status(201).json(post);
   } catch (error) {
     return ErrorUtils.customError(error, res);
   }
