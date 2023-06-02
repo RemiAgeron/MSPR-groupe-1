@@ -98,7 +98,7 @@ export const createComment = async (req: Request, res: Response) => {
   }
 };
 
-// FIXME: PUT /api/comment/:id
+// PUT /api/comment/:id
 // Update comment
 export const updateComment = async (req: Request, res: Response) => {
   try {
@@ -121,7 +121,7 @@ export const updateComment = async (req: Request, res: Response) => {
   }
 };
 
-// FIXME: DELETE /api/comment/:id
+// DELETE /api/comment/:id
 // Delete comment
 export const deleteComment = async (req: Request, res: Response) => {
   try {
