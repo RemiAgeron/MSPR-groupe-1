@@ -45,8 +45,10 @@ export class Tab2Page {
     if (this.segmentQuery !== "all") {
       filteredResults = filteredResults.filter((d) => d.type.toLowerCase() === this.segmentQuery);
     }
-    if (this.inputQuery) {
+    if ((this.inputQuery || "").length > 0) {
       filteredResults = filteredResults.filter((d) => d.name.toLowerCase().indexOf(this.inputQuery || "") > -1);
+    } else {
+      filteredResults = [];
     }
     this.results = filteredResults;
   }
