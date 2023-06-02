@@ -1,7 +1,7 @@
 import { Component } from '@angular/core';
 import { IonicModule } from '@ionic/angular';
 import { ExploreContainerComponent } from '../explore-container/explore-container.component';
-import { CommonModule } from '@angular/common'
+import { CommonModule } from '@angular/common';
 
 interface Item {
   name: string;
@@ -36,18 +36,17 @@ export class Tab2Page {
     {name: "PYRUS POIRIER", type: "plant"},
     {name: "QUERCUS CHENE", type: "plant"},
   ];
-  public results = [...this.data];
-
-  public inputQuery: string = "";
+  public results: Item[] = [];
+  public inputQuery?: string;
   public segmentQuery: string = "all";
 
   setResults() {
-    let filteredResults = this.data
+    let filteredResults = this.data;
     if (this.segmentQuery !== "all") {
       filteredResults = filteredResults.filter((d) => d.type.toLowerCase() === this.segmentQuery);
     }
     if (this.inputQuery) {
-      filteredResults = filteredResults.filter((d) => d.name.toLowerCase().indexOf(this.inputQuery) > -1);
+      filteredResults = filteredResults.filter((d) => d.name.toLowerCase().indexOf(this.inputQuery || "") > -1);
     }
     this.results = filteredResults;
   }
