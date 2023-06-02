@@ -1,0 +1,39 @@
+<ion-header [translucent]="true">
+  <ion-toolbar>
+    <ion-title>Recherche</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content [fullscreen]="true">
+
+  <div class="ion-align-items-center ion-padding-horizontal ion-padding-bottom" [ngClass]="{'center-div' : !inputQuery}">
+    <ion-searchbar animated="true" placeholder="Recherche..." [debounce]="700" (ionInput)="handleInput($event)"></ion-searchbar>
+
+    <ion-segment value="all" (ionChange)="handleChange($event)">
+      <ion-segment-button value="all">
+        <ion-label>Tous</ion-label>
+      </ion-segment-button>
+      <ion-segment-button value="user">
+        <ion-label>Users</ion-label>
+      </ion-segment-button>
+      <ion-segment-button value="plant">
+        <ion-label>Plantes</ion-label>
+      </ion-segment-button>
+      <ion-segment-button value="botanist">
+        <ion-label>Botanistes</ion-label>
+      </ion-segment-button>
+    </ion-segment>
+  </div>
+
+  <ion-list>
+    <ion-item button *ngFor="let item of results" (click)="handleClick(item)">
+      <ion-avatar slot="start">
+        <img alt="Item's type icon" src="assets/{{ item.type }}.svg" />
+      </ion-avatar>
+      <ion-label>{{ item.name }}</ion-label>
+    </ion-item>
+  </ion-list>
+
+  <ion-title *ngIf="inputQuery && results.length === 0">Aucuns résultats</ion-title>
+
+</ion-content>

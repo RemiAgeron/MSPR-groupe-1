@@ -1,0 +1,7 @@
+{
+  "name": "arosaje",
+  "integrations": {
+    "capacitor": {}
+  },
+  "type": "angular-standalone"
+}
