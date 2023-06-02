@@ -2,11 +2,11 @@
 
 .PHONY: help
 
-start: up install schema migrate seed ## Start the application
+start: up install schema migrate ## Start the application
 
 up: ## Start the application
 	@echo "Starting the application..."
-	docker-compose up -d
+	docker-compose up --build --detach
 
 down: ## Stop the application
 	@echo "Stopping the application..."
@@ -14,9 +14,19 @@ down: ## Stop the application
 
 restart: down up ## Restart the application
 
+reload-schema: validate-schema schema migrate ## Reload the schema
+
 install: ## Install dependencies
 	@echo "Installing app dependencies..."
 	docker-compose exec backend npm install
+
+studio: ## Open prisma studio
+	@echo "Opening prisma studio"
+	docker-compose exec backend npx prisma studio
+
+validate-schema: ## Validate schema
+	@echo "Validating schema"
+	docker-compose exec backend npx prisma validate
 
 schema: ## Generate bdd schema
 	@echo "Linking bdd"

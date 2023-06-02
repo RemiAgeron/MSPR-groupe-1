@@ -21,15 +21,15 @@ describe('User', () => {
           password: 'password',
           phone: '0606060606',
         })
-        .expect([201, 409])
+        .expect([201, 409]);
 
-      if(res.status === 201) {
+      if (res.status === 201) {
         expect(res.body).toHaveProperty('id');
         expect(res.body).toHaveProperty('token');
-        
+
         userToken = res.body.token;
         userId = res.body.id;
-      } else if(res.status === 409) {
+      } else if (res.status === 409) {
         expect(res.body).toHaveProperty('error');
       }
     });
@@ -45,18 +45,17 @@ describe('User', () => {
           phone: '0606060606',
           isAdmin: 'true',
         })
-        .expect([201, 409])
+        .expect([201, 409]);
 
-      if(res.status === 201) {
+      if (res.status === 201) {
         expect(res.body).toHaveProperty('id');
         expect(res.body).toHaveProperty('token');
-        
+
         adminToken = res.body.token;
-      } else if(res.status === 409) {
+      } else if (res.status === 409) {
         expect(res.body).toHaveProperty('error');
       }
     });
-
 
     it('should return 400 if missing fields', async () => {
       await request(URL)
@@ -68,7 +67,7 @@ describe('User', () => {
           phone: '0606060606',
         })
         .expect(400);
-      });
+    });
   });
 
   describe('POST /api/user/login', () => {
@@ -119,9 +118,7 @@ describe('User', () => {
 
   describe('GET /api/user', () => {
     it('should return all users', async () => {
-      const res = await request(URL)
-        .get('/api/user')
-        .expect(200);
+      const res = await request(URL).get('/api/user').expect(200);
     });
   });
 
@@ -162,9 +159,43 @@ describe('User', () => {
 
       expect(updatedUser.body.phone).toBe('0707070707');
     });
+
+    it('should return 404 if user not found', async () => {
+      await request(URL)
+        .patch('/api/user/999999')
+        .set('Authorization', `Bearer ${userToken}`)
+        .send({
+          phone: '0707070707',
+        })
+        .expect(404);
+    });
   });
 
+  describe('DELETE /api/user/:id', () => {
+    it('should delete user', async () => {
+      await request(URL)
+        .delete(`/api/user/${userId}`)
+        .set('Authorization', `Bearer ${userToken}`)
+        .expect(200);
 
+      await request(URL)
+        .get(`/api/user/${userId}`)
+        .set('Authorization', `Bearer ${userToken}`)
+        .expect(404);
+    });
 
+    it('should return 404 if user not found', async () => {
+      await request(URL)
+        .delete('/api/user/999999')
+        .set('Authorization', `Bearer ${userToken}`)
+        .expect(404);
+    });
 
+    it('should return 401 if user is not admin', async () => {
+      await request(URL)
+        .delete(`/api/user/${userId}`)
+        .set('Authorization', `Bearer ${userToken}`)
+        .expect(401);
+    });
+  });
 });

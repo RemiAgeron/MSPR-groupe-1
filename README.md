@@ -23,7 +23,7 @@ docker-compose up --build
 Installer les paquets et initialiser la BDD :
 
 ```bash
-make backend-init
+make start
 ```
 
 Visualiser les données de la BDD :
@@ -33,4 +33,3 @@ Utiliser **Adminer** à l'adresse http://localhost:5555 ou utiliser **Prisma Stu
 ```bash
 docker-compose exec backend npx prisma studio
 ```
-

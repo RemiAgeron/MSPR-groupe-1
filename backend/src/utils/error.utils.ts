@@ -1,7 +1,7 @@
 import { Response } from 'express';
 
 export default class ErrorUtils {
-  static getError(error: unknown, res: Response) {
+  static customError(error: unknown, res: Response) {
     let message;
     if (error instanceof Error) {
       message = error.message;

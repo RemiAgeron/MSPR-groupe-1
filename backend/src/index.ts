@@ -9,9 +9,11 @@ import { botanistRoutes } from './routes/botanist.routes';
 
 // Messages routes
 import { messagingRoutes } from './routes/messaging.routes';
-import { conversationRoutes } from './routes/conversation.routes';
 
-// Publications routes
+// Review routes
+import { reviewRoutes } from './routes/review.routes';
+
+// // Publications routes
 import { postRoutes } from './routes/post.routes';
 import { commentRoutes } from './routes/comment.routes';
 
@@ -31,9 +33,11 @@ app.use('/api/botanist', botanistRoutes);
 
 // Messages routes
 app.use('/api/messaging', messagingRoutes);
-app.use('/api/conversation', conversationRoutes);
 
-// Publications routes
+// // Review routes
+app.use('/api/review', reviewRoutes);
+
+// // Publications routes
 app.use('/api/post', postRoutes);
 app.use('/api/comment', commentRoutes);
 

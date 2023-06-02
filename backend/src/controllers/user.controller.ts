@@ -12,7 +12,7 @@ export const getUsers = async (req: Request, res: Response) => {
     const users = await prisma.findMany();
     return res.status(200).json(users);
   } catch (error) {
-    return ErrorUtils.getError(error, res);
+    return ErrorUtils.customError(error, res);
   }
 };
 
@@ -33,11 +33,11 @@ export const getUser = async (req: Request, res: Response) => {
       return res.status(200).json(user);
     }
   } catch (error) {
-    return ErrorUtils.getError(error, res);
+    return ErrorUtils.customError(error, res);
   }
 };
 
-// FIXME : PATCH /api/user/:id
+// PATCH /api/user/:id
 // Update user by id
 export const updateUser = async (req: Request, res: Response) => {
   try {
@@ -47,7 +47,6 @@ export const updateUser = async (req: Request, res: Response) => {
     if (!firstname && !lastname && !email && !phone && !description) {
       return res.status(400).json({ error: 'Missing fields' });
     } else {
-
       const checkUser = await prisma.findUnique({
         where: {
           id: parseInt(id),
@@ -72,8 +71,8 @@ export const updateUser = async (req: Request, res: Response) => {
         if (description) {
           data = { ...data, description: description };
         }
-        
-        if(Object.keys(data).length !== 0) {
+
+        if (Object.keys(data).length !== 0) {
           const user = await prisma.update({
             where: {
               id: parseInt(id),
@@ -84,10 +83,10 @@ export const updateUser = async (req: Request, res: Response) => {
         } else {
           return res.status(400).json({ error: 'Missing fields' });
         }
-      } 
+      }
     }
   } catch (error) {
-    return ErrorUtils.getError(error, res);
+    return ErrorUtils.customError(error, res);
   }
 };
 
@@ -96,17 +95,21 @@ export const updateUser = async (req: Request, res: Response) => {
 export const deleteUser = async (req: Request, res: Response) => {
   try {
     const { id } = req.params;
+
     const user = await prisma.delete({
       where: {
         id: parseInt(id),
       },
     });
+    
     if (!user) {
       return ErrorUtils.getNotFoundError(res);
     } else {
-      return res.status(200).json(user);
+      return res
+        .status(200)
+        .json({ message: 'User deleted successfully', user });
     }
   } catch (error) {
-    return ErrorUtils.getError(error, res);
+    return ErrorUtils.customError(error, res);
   }
 };
