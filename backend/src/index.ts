@@ -7,9 +7,11 @@ import bodyParser from 'body-parser';
 import { userRoutes } from './routes/user.routes';
 import { botanistRoutes } from './routes/botanist.routes';
 
-// // Messages routes
-// import { messagingRoutes } from './routes/messaging.routes';
-// import { conversationRoutes } from './routes/conversation.routes';
+// Messages routes
+import { messagingRoutes } from './routes/messaging.routes';
+
+// Review routes
+import { reviewRoutes } from './routes/review.routes';
 
 // // Publications routes
 import { postRoutes } from './routes/post.routes';
@@ -29,9 +31,11 @@ const HTTP_PORT = process.env.PORT || 5000;
 app.use('/api/user', userRoutes);
 app.use('/api/botanist', botanistRoutes);
 
-// // Messages routes
-// app.use('/api/messaging', messagingRoutes);
-// app.use('/api/conversation', conversationRoutes);
+// Messages routes
+app.use('/api/messaging', messagingRoutes);
+
+// // Review routes
+app.use('/api/review', reviewRoutes);
 
 // // Publications routes
 app.use('/api/post', postRoutes);

@@ -9,41 +9,54 @@ datasource db {
 }
 
 model users {
-  id             Int             @id @default(autoincrement())
-  isAdmin        Boolean         @default(false)
-  firstname      String
-  lastname       String
-  email          String          @unique
-  password       String
-  phone          String?
-  description    String?
+  id               Int         @id @default(autoincrement())
+  isAdmin          Boolean     @default(false)
+  firstname        String
+  lastname         String
+  email            String      @unique
+  password         String
+  phone            String?
+  description      String?
   // user_picture
-  created_at     DateTime        @default(now())
-  Conversation   conversations[]
-  conversationId Int?
-  Message        messages[]
-  Comment        comments[]
-  Post           posts[]
-  Botanist       botanists[]
-  Review         reviews[]
+  created_at       DateTime    @default(now())
+  sentMessages     messages[]  @relation("sentMessages")
+  receivedMessages messages[]  @relation("receivedMessages")
+  Comment          comments[]
+  Post             posts[]
+  Botanist         botanists[]
+  Review           reviews[]
 }
 
-model conversations {
-  id         Int        @id @default(autoincrement())
-  users      users[]
-  messages   messages[]
-  created_at DateTime   @default(now())
+// Botanist profile
+model botanists {
+  id           Int       @id @default(autoincrement())
+  userId       Int       @unique
+  user         users     @relation(fields: [userId], references: [id])
+  adress       String
+  company_name String
+  reviews      reviews[]
+}
+
+// Botanist review by user
+model reviews {
+  id         Int       @id @default(autoincrement())
+  content    String
+  senderId   Int
+  sender     users     @relation(fields: [senderId], references: [id])
+  botanistId Int
+  botanist   botanists @relation(fields: [botanistId], references: [id])
+  created_at DateTime  @default(now())
 }
 
 // Conversation message
 model messages {
-  id             Int           @id @default(autoincrement())
-  content        String
-  senderId       Int
-  sender         users         @relation(fields: [senderId], references: [id])
-  conversationId Int
-  conversation   conversations @relation(fields: [conversationId], references: [id])
-  created_at     DateTime      @default(now())
+  id         Int      @id @default(autoincrement())
+  content    String
+  senderId   Int
+  sender     users    @relation(name: "sentMessages", fields: [senderId], references: [id])
+  receiverId Int
+  receiver   users    @relation(name: "receivedMessages", fields: [receiverId], references: [id])
+  created_at DateTime @default(now())
 }
 
 // TODO: store picture
@@ -79,25 +92,4 @@ model plants {
   species    String?
   created_at DateTime  @default(now())
   updated_at DateTime? @updatedAt
-}
-
-// Botanist profile
-model botanists {
-  id           Int       @id @default(autoincrement())
-  userId       Int       @unique
-  user         users     @relation(fields: [userId], references: [id])
-  adress       String
-  company_name String
-  reviews      reviews[]
-}
-
-// Botanist review by user
-model reviews {
-  id         Int       @id @default(autoincrement())
-  content    String
-  senderId   Int
-  sender     users     @relation(fields: [senderId], references: [id])
-  botanistId Int
-  botanist   botanists @relation(fields: [botanistId], references: [id])
-  created_at DateTime  @default(now())
 }
