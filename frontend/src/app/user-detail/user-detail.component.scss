@@ -1,0 +1,19 @@
+.biography {
+  margin: 1em;
+  width: 5em;
+  aspect-ratio: 1 / 1;
+  background-color: bisque;
+  border-radius: 50%;
+  overflow: hidden;
+}
+
+.review {
+  background-color: salmon;
+}
+
+.publication {
+  aspect-ratio: 1 / 1;
+  background-color: antiquewhite;
+  border-radius: 5%;
+  box-shadow: 0 0 0.2em gray;
+}

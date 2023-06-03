@@ -1,6 +1,8 @@
 import { Routes } from '@angular/router';
 import { TabsPage } from './tabs.page';
 
+import { UserDetailComponent } from '../user-detail/user-detail.component';
+
 export const routes: Routes = [
   {
     path: 'tabs',
@@ -27,6 +29,11 @@ export const routes: Routes = [
         pathMatch: 'full',
       },
     ],
+  },
+  {
+    path: 'user/:id',
+    component: UserDetailComponent,
+    pathMatch: 'full',
   },
   {
     path: '',
