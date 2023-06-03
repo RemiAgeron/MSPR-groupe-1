@@ -12,7 +12,7 @@
   </ion-toolbar>
 </ion-header>
 
-<ion-content [fullscreen]="true">
+<ion-content>
   <ion-item class="ion-margin-vertical">
     <ion-img class="biography" alt="User profile's picture" src="assets/user.svg" />
     <ion-label margin>
@@ -23,7 +23,7 @@
       <p>{{ user.biography }}</p>
     </ion-label>
   </ion-item>
-  <div class="ion-padding-horizontal ion-padding-bottom">
+  <div class="ion-padding-horizontal sticky">
     <ion-segment value="{{ segmentChoice }}" (ionChange)="handleChange($event)">
       <ion-segment-button value="publication">
         <ion-label>Publications</ion-label>
@@ -65,3 +65,17 @@
     </div>
   </div>
 </ion-content>
+
+<ion-tab-bar slot="bottom">
+  <ion-tab-button href="/tabs/tab1">
+    <ion-icon aria-hidden="true" name="home-outline"></ion-icon>
+  </ion-tab-button>
+
+  <ion-tab-button href="/tabs/tab2">
+    <ion-icon aria-hidden="true" name="search-outline"></ion-icon>
+  </ion-tab-button>
+
+  <ion-tab-button href="/tabs/tab3">
+    <ion-icon aria-hidden="true" name="person-outline"></ion-icon>
+  </ion-tab-button>
+</ion-tab-bar>

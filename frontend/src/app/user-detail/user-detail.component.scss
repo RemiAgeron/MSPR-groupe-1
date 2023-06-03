@@ -7,6 +7,17 @@
   overflow: hidden;
 }
 
+.sticky {
+  position: sticky;
+  position: -webkit-sticky;
+  top: 0;
+  padding-bottom: 1em;
+  padding-top: 1em;
+  background-color: white;
+  z-index: 1;
+  box-shadow: 0 0 0.2em white;
+}
+
 .review {
   background-color: salmon;
 }
