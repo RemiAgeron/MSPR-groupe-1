@@ -96,19 +96,21 @@ export const deleteUser = async (req: Request, res: Response) => {
   try {
     const { id } = req.params;
 
+    const checkUser = await prisma.findUnique({
+      where: {
+        id: parseInt(id),
+      },
+    });
+
+    if (!checkUser) return ErrorUtils.getNotFoundError(res);
+
     const user = await prisma.delete({
       where: {
         id: parseInt(id),
       },
     });
-    
-    if (!user) {
-      return ErrorUtils.getNotFoundError(res);
-    } else {
-      return res
-        .status(200)
-        .json({ message: 'User deleted successfully', user });
-    }
+
+    return res.status(200).json({ message: 'User deleted successfully', user });
   } catch (error) {
     return ErrorUtils.customError(error, res);
   }

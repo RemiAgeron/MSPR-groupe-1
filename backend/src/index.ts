@@ -1,6 +1,6 @@
 /* eslint-disable no-console */
 import dotenv = require('dotenv');
-import express from 'express';
+import express, { Application } from 'express';
 import bodyParser from 'body-parser';
 
 // User routes
@@ -19,7 +19,7 @@ import { commentRoutes } from './routes/comment.routes';
 
 dotenv.config();
 
-const app = express();
+const app: Application = express();
 
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: false }));
