@@ -54,6 +54,16 @@ describe('User', () => {
         adminToken = res.body.token;
       } else if (res.status === 409) {
         expect(res.body).toHaveProperty('error');
+
+        const adminLogin = await request(URL)
+          .post('/api/user/login')
+          .send({
+            email: 'john@doe.com',
+            password: 'password',
+          })
+          .expect(200);
+
+        adminToken = adminLogin.body.token;
       }
     });
 
@@ -118,7 +128,17 @@ describe('User', () => {
 
   describe('GET /api/user', () => {
     it('should return all users', async () => {
-      const res = await request(URL).get('/api/user').expect(200);
+      await request(URL)
+        .get('/api/user')
+        .set('Authorization', `Bearer ${adminToken}`)
+        .expect(200);
+    });
+
+    it('should return 403 if not admin', async () => {
+      await request(URL)
+        .get('/api/user')
+        .set('Authorization', `Bearer ${userToken}`)
+        .expect(403);
     });
   });
 
@@ -140,7 +160,7 @@ describe('User', () => {
     });
   });
 
-  describe('PUT /api/user/:id', () => {
+  describe('PATCH /api/user/:id', () => {
     it('should update user', async () => {
       const res = await request(URL)
         .patch(`/api/user/${userId}`)
@@ -160,6 +180,14 @@ describe('User', () => {
       expect(updatedUser.body.phone).toBe('0707070707');
     });
 
+    it('should return 400 if missing fields', async () => {
+      await request(URL)
+        .patch(`/api/user/${userId}`)
+        .set('Authorization', `Bearer ${userToken}`)
+        .send({})
+        .expect(400);
+    });
+
     it('should return 404 if user not found', async () => {
       await request(URL)
         .patch('/api/user/999999')
@@ -173,13 +201,24 @@ describe('User', () => {
 
   describe('DELETE /api/user/:id', () => {
     it('should delete user', async () => {
+      const res = await request(URL)
+        .post('/api/user/register')
+        .send({
+          firstname: 'userToDelete',
+          lastname: 'userToDelete',
+          email: 'userToDelete@userToDelete.com',
+          password: 'password',
+        })
+        .expect(201);
+      expect(res.body).toHaveProperty('id');
+
       await request(URL)
-        .delete(`/api/user/${userId}`)
+        .delete(`/api/user/${res.body.id}`)
         .set('Authorization', `Bearer ${userToken}`)
         .expect(200);
 
       await request(URL)
-        .get(`/api/user/${userId}`)
+        .get(`/api/user/${res.body.id}`)
         .set('Authorization', `Bearer ${userToken}`)
         .expect(404);
     });
@@ -189,13 +228,6 @@ describe('User', () => {
         .delete('/api/user/999999')
         .set('Authorization', `Bearer ${userToken}`)
         .expect(404);
-    });
-
-    it('should return 401 if user is not admin', async () => {
-      await request(URL)
-        .delete(`/api/user/${userId}`)
-        .set('Authorization', `Bearer ${userToken}`)
-        .expect(401);
     });
   });
 });

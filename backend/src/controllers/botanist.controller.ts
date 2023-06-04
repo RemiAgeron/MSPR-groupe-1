@@ -12,7 +12,7 @@ export const getBotanists = async (req: Request, res: Response) => {
     const bontanists = await prisma.findMany();
     return res.status(200).json(bontanists);
   } catch (error) {
-    return ErrorUtils.customError(error, res);
+    return ErrorUtils.getError(error, res);
   }
 };
 
@@ -33,7 +33,7 @@ export const getBotanist = async (req: Request, res: Response) => {
       return res.status(200).json(botanist);
     }
   } catch (error) {
-    return ErrorUtils.customError(error, res);
+    return ErrorUtils.getError(error, res);
   }
 };
 
@@ -54,7 +54,7 @@ export const getBotanistByUser = async (req: Request, res: Response) => {
       return res.status(200).json(user);
     }
   } catch (error) {
-    return ErrorUtils.customError(error, res);
+    return ErrorUtils.getError(error, res);
   }
 };
 
@@ -92,7 +92,7 @@ export const createBotanist = async (req: Request, res: Response) => {
       return res.status(201).json(botanist);
     }
   } catch (error) {
-    return ErrorUtils.customError(error, res);
+    return ErrorUtils.getError(error, res);
   }
 };
 
@@ -133,7 +133,7 @@ export const updateBotanist = async (req: Request, res: Response) => {
       }
     }
   } catch (error) {
-    return ErrorUtils.customError(error, res);
+    return ErrorUtils.getError(error, res);
   }
 };
 
@@ -161,6 +161,6 @@ export const deleteBotanist = async (req: Request, res: Response) => {
         .json({ message: 'Botanist deleted successfully', botanist });
     }
   } catch (error) {
-    return ErrorUtils.customError(error, res);
+    return ErrorUtils.getError(error, res);
   }
 };

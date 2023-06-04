@@ -28,7 +28,7 @@ export const checkJwtToken = (
 
     next();
   } catch (error) {
-    return ErrorUtils.customError(error, res);
+    return ErrorUtils.getError(error, res);
   }
 };
 

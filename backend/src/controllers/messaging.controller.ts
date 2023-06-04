@@ -12,7 +12,7 @@ export const getMessages = async (req: Request, res: Response) => {
     const messages = await prisma.findMany();
     return res.status(200).json(messages);
   } catch (error) {
-    return ErrorUtils.customError(error, res);
+    return ErrorUtils.getError(error, res);
   }
 };
 
@@ -33,7 +33,7 @@ export const getMessage = async (req: Request, res: Response) => {
       return res.status(200).json(message);
     }
   } catch (error) {
-    return ErrorUtils.customError(error, res);
+    return ErrorUtils.getError(error, res);
   }
 };
 
@@ -54,7 +54,7 @@ export const getMessageByUser = async (req: Request, res: Response) => {
       return res.status(200).json(user);
     }
   } catch (error) {
-    return ErrorUtils.customError(error, res);
+    return ErrorUtils.getError(error, res);
   }
 };
 
@@ -77,7 +77,7 @@ export const createMessage = async (req: Request, res: Response) => {
     });
     return res.status(201).json(message);
   } catch (error) {
-    return ErrorUtils.customError(error, res);
+    return ErrorUtils.getError(error, res);
   }
 };
 
@@ -111,7 +111,7 @@ export const updateMessage = async (req: Request, res: Response) => {
     });
     return res.status(200).json(message);
   } catch (error) {
-    return ErrorUtils.customError(error, res);
+    return ErrorUtils.getError(error, res);
   }
 };
 
@@ -130,6 +130,6 @@ export const deleteMessage = async (req: Request, res: Response) => {
       .status(200)
       .send({ message: 'Message deleted successfully', userMessage });
   } catch (error) {
-    return ErrorUtils.customError(error, res);
+    return ErrorUtils.getError(error, res);
   }
 };

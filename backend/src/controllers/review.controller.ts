@@ -12,7 +12,7 @@ export const getReviews = async (req: Request, res: Response) => {
     const review = await prisma.findMany();
     return res.status(200).json(review);
   } catch (error) {
-    return ErrorUtils.customError(error, res);
+    return ErrorUtils.getError(error, res);
   }
 };
 
@@ -33,7 +33,7 @@ export const getReview = async (req: Request, res: Response) => {
       return res.status(200).json(review);
     }
   } catch (error) {
-    return ErrorUtils.customError(error, res);
+    return ErrorUtils.getError(error, res);
   }
 };
 
@@ -54,7 +54,7 @@ export const getReviewByUser = async (req: Request, res: Response) => {
       return res.status(200).json(user);
     }
   } catch (error) {
-    return ErrorUtils.customError(error, res);
+    return ErrorUtils.getError(error, res);
   }
 };
 
@@ -75,7 +75,7 @@ export const getReviewByBotanist = async (req: Request, res: Response) => {
       return res.status(200).json(botanist);
     }
   } catch (error) {
-    return ErrorUtils.customError(error, res);
+    return ErrorUtils.getError(error, res);
   }
 };
 
@@ -98,7 +98,7 @@ export const createReview = async (req: Request, res: Response) => {
     });
     return res.status(201).json(review);
   } catch (error) {
-    return ErrorUtils.customError(error, res);
+    return ErrorUtils.getError(error, res);
   }
 };
 
@@ -132,7 +132,7 @@ export const updateReview = async (req: Request, res: Response) => {
     });
     return res.status(200).json(review);
   } catch (error) {
-    return ErrorUtils.customError(error, res);
+    return ErrorUtils.getError(error, res);
   }
 };
 
@@ -151,6 +151,6 @@ export const deleteReview = async (req: Request, res: Response) => {
       .status(200)
       .send({ message: 'Message deleted successfully', review });
   } catch (error) {
-    return ErrorUtils.customError(error, res);
+    return ErrorUtils.getError(error, res);
   }
 };

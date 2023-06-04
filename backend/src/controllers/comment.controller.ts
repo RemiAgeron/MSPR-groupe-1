@@ -12,7 +12,7 @@ export const getComments = async (req: Request, res: Response) => {
     const comments = await prisma.findMany();
     return res.status(200).json(comments);
   } catch (error) {
-    return ErrorUtils.customError(error, res);
+    return ErrorUtils.getError(error, res);
   }
 };
 
@@ -33,7 +33,7 @@ export const getComment = async (req: Request, res: Response) => {
       return res.status(200).json(comment);
     }
   } catch (error) {
-    return ErrorUtils.customError(error, res);
+    return ErrorUtils.getError(error, res);
   }
 };
 
@@ -54,7 +54,7 @@ export const getCommentByUser = async (req: Request, res: Response) => {
       return res.status(200).json(user);
     }
   } catch (error) {
-    return ErrorUtils.customError(error, res);
+    return ErrorUtils.getError(error, res);
   }
 };
 
@@ -75,7 +75,7 @@ export const getCommentByPost = async (req: Request, res: Response) => {
       return res.status(200).json(post);
     }
   } catch (error) {
-    return ErrorUtils.customError(error, res);
+    return ErrorUtils.getError(error, res);
   }
 };
 
@@ -94,7 +94,7 @@ export const createComment = async (req: Request, res: Response) => {
     });
     return res.status(200).json(comment);
   } catch (error) {
-    return ErrorUtils.customError(error, res);
+    return ErrorUtils.getError(error, res);
   }
 };
 
@@ -117,7 +117,7 @@ export const updateComment = async (req: Request, res: Response) => {
     });
     return res.status(200).json(comment);
   } catch (error) {
-    return ErrorUtils.customError(error, res);
+    return ErrorUtils.getError(error, res);
   }
 };
 
@@ -134,6 +134,6 @@ export const deleteComment = async (req: Request, res: Response) => {
     });
     return res.status(200).json({ message: 'Comment deleted successfully', comment });
   } catch (error) {
-    return ErrorUtils.customError(error, res);
+    return ErrorUtils.getError(error, res);
   }
 };
