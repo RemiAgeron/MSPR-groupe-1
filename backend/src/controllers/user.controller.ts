@@ -21,10 +21,15 @@ export const getUsers = async (req: Request, res: Response) => {
 export const getUser = async (req: Request, res: Response) => {
   try {
     const { id } = req.params;
+    const parsedId = parseInt(id);
+
+    if (parsedId <= 0 || isNaN(parsedId)) {
+      return ErrorUtils.getBadRequestError(res);
+    }
 
     const user = await prisma.findUnique({
       where: {
-        id: parseInt(id),
+        id: parsedId,
       },
     });
     if (!user) {

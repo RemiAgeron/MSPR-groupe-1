@@ -22,10 +22,15 @@ export const getPosts = async (req: Request, res: Response) => {
 export const getPost = async (req: Request, res: Response) => {
   try {
     const { id } = req.params;
+    const parsedId = parseInt(id);
+
+    if (parsedId <= 0 || isNaN(parsedId)) {
+      return ErrorUtils.getBadRequestError(res);
+    }
 
     const post = await prismaPosts.findUnique({
       where: {
-        id: parseInt(id),
+        id: parsedId,
       },
     });
     if (!post) {
@@ -114,6 +119,16 @@ export const updatePost = async (req: Request, res: Response) => {
   try {
     const { id } = req.params;
     const { title, content, tags } = req.body;
+
+    const checkPost = await prismaPosts.findUnique({
+      where: {
+        id: parseInt(id),
+      },
+    });
+
+    if (!checkPost) {
+      return ErrorUtils.getNotFoundError(res);
+    }
 
     if (!title && !content && !tags) {
       return ErrorUtils.getMissingFieldsError(res);

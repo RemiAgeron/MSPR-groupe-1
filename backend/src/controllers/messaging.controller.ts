@@ -21,10 +21,15 @@ export const getMessages = async (req: Request, res: Response) => {
 export const getMessage = async (req: Request, res: Response) => {
   try {
     const { id } = req.params;
+    const parsedId = parseInt(id);
+
+    if (parsedId <= 0 || isNaN(parsedId)) {
+      return ErrorUtils.getBadRequestError(res);
+    }
 
     const message = await prisma.findUnique({
       where: {
-        id: parseInt(id),
+        id: parsedId,
       },
     });
     if (!message) {
@@ -87,6 +92,11 @@ export const updateMessage = async (req: Request, res: Response) => {
   try {
     const { id } = req.params;
     const { content } = req.body;
+    const parsedId = parseInt(id);
+
+    if (parsedId <= 0 || isNaN(parsedId)) {
+      return ErrorUtils.getBadRequestError(res);
+    }
 
     if (!content) {
       return ErrorUtils.getMissingFieldsError(res);
@@ -94,7 +104,7 @@ export const updateMessage = async (req: Request, res: Response) => {
 
     const idExists = await prisma.findUnique({
       where: {
-        id: parseInt(id),
+        id: parsedId,
       },
     });
     if (!idExists) {
@@ -103,7 +113,7 @@ export const updateMessage = async (req: Request, res: Response) => {
 
     const message = await prisma.update({
       where: {
-        id: parseInt(id),
+        id: parsedId,
       },
       data: {
         content: content,
