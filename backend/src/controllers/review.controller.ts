@@ -147,6 +147,15 @@ export const deleteReview = async (req: Request, res: Response) => {
   try {
     const { id } = req.params;
 
+    const idExists = await prisma.findUnique({
+      where: {
+        id: parseInt(id),
+      },
+    });
+    if (!idExists) {
+      return ErrorUtils.getNotFoundError(res);
+    }
+
     const review = await prisma.delete({
       where: {
         id: parseInt(id),
