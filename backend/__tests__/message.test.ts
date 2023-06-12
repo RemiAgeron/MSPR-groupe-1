@@ -1,11 +1,8 @@
 import request = require('supertest');
-import jwt = require('jsonwebtoken');
 import dotenv = require('dotenv');
 const URL = 'http://localhost:5000';
 
 dotenv.config();
-
-// TODO: add tests for all message routes
 
 describe('Message', () => {
   let userToken: string;
@@ -57,6 +54,41 @@ describe('Message', () => {
 
       messageId = newMessage.body.id;
     });
+
+    it('should return 400 if senderId and receiverId are the same', async () => {
+      await request(URL)
+        .post('/api/message')
+        .set('Authorization', `Bearer ${userToken}`)
+        .send({
+          content: 'This is my first message',
+          senderId: userId,
+          receiverId: userId,
+        })
+        .expect(400);
+    });
+
+    it('should return 400 if its missing a field', async () => {
+      await request(URL)
+        .post('/api/message')
+        .set('Authorization', `Bearer ${userToken}`)
+        .send({
+          content: 'This is my first message',
+          senderId: userId,
+        })
+        .expect(400);
+    });
+
+    it('should return 404 if senderId or receiverId is invalid', async () => {
+      await request(URL)
+        .post('/api/message')
+        .set('Authorization', `Bearer ${userToken}`)
+        .send({
+          content: 'This is my first message',
+          senderId: 999999,
+          receiverId: adminId,
+        })
+        .expect(404);
+    });
   });
 
   describe('GET /api/message', () => {
@@ -75,14 +107,28 @@ describe('Message', () => {
         .set('Authorization', `Bearer ${userToken}`)
         .expect(200);
     });
+
+    it('should return 404 if message not found', async () => {
+      await request(URL)
+        .get('/api/message/999999')
+        .set('Authorization', `Bearer ${userToken}`)
+        .expect(404);
+    });
   });
 
   describe('GET /api/message/user/:id', () => {
     it('should get all messages by user id', async () => {
       await request(URL)
-        .get(`/api/message/${messageId}`)
+        .get(`/api/message/user/${userId}`)
         .set('Authorization', `Bearer ${userToken}`)
         .expect(200);
+    });
+
+    it('should return 404 if user not found', async () => {
+      await request(URL)
+        .get('/api/message/user/999999')
+        .set('Authorization', `Bearer ${userToken}`)
+        .expect(404);
     });
   });
 
@@ -93,10 +139,26 @@ describe('Message', () => {
         .set('Authorization', `Bearer ${userToken}`)
         .send({
           content: 'This is my first message',
-          senderId: userId,
-          receiverId: userId,
         })
         .expect(200);
+    });
+
+    it('should return 404 if message not found', async () => {
+      await request(URL)
+        .patch('/api/message/999999')
+        .set('Authorization', `Bearer ${userToken}`)
+        .send({
+          content: 'This is my first message',
+        })
+        .expect(404);
+    });
+
+    it('should return 400 if its missing a field', async () => {
+      await request(URL)
+        .patch(`/api/message/${messageId}`)
+        .set('Authorization', `Bearer ${userToken}`)
+        .send()
+        .expect(400);
     });
   });
 
@@ -107,7 +169,12 @@ describe('Message', () => {
         .set('Authorization', `Bearer ${userToken}`)
         .expect(200);
     });
-  });
 
-  // describe('GET /api/message/sent/:id', () => {
+    it('should return 404 if message not found', async () => {
+      await request(URL)
+        .delete('/api/message/999999')
+        .set('Authorization', `Bearer ${userToken}`)
+        .expect(404);
+    });
+  });
 });

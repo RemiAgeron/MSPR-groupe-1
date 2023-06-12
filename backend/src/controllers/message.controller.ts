@@ -4,6 +4,7 @@ import { Request, Response } from 'express';
 import ErrorUtils from '../utils/error.utils';
 
 const prisma = new PrismaClient().messages;
+const prismaUser = new PrismaClient().users;
 
 // GET /api/message
 // Get all messages
@@ -48,12 +49,23 @@ export const getMessageByUser = async (req: Request, res: Response) => {
   try {
     const userId = req.params.id;
 
+    const userExists = await prismaUser.findUnique({
+      where: {
+        id: parseInt(userId),
+      },
+    });
+
+    if (!userExists) {
+      return ErrorUtils.getNotFoundError(res);
+    }
+
     const user = await prisma.findMany({
       where: {
         OR: [{ senderId: parseInt(userId) }, { receiverId: parseInt(userId) }],
       },
     });
     if (!user) {
+      console.log(user)
       return ErrorUtils.getNotFoundError(res);
     } else {
       return res.status(200).json(user);
@@ -71,6 +83,26 @@ export const createMessage = async (req: Request, res: Response) => {
 
     if (!content || !senderId || !receiverId) {
       return ErrorUtils.getMissingFieldsError(res);
+    }
+
+    if(senderId === receiverId) {
+      return ErrorUtils.getBadRequestError(res);
+    }
+
+    const senderExists = await prismaUser.findUnique({
+      where: {
+        id: parseInt(senderId),
+      },
+    });
+
+    const receiverExists = await prismaUser.findUnique({
+      where: {
+        id: parseInt(receiverId),
+      },
+    });
+
+    if (!senderExists || !receiverExists) {
+      return ErrorUtils.getNotFoundError(res);
     }
 
     const message = await prisma.create({
@@ -111,6 +143,8 @@ export const updateMessage = async (req: Request, res: Response) => {
       return ErrorUtils.getNotFoundError(res);
     }
 
+
+
     const message = await prisma.update({
       where: {
         id: parsedId,
@@ -130,6 +164,16 @@ export const updateMessage = async (req: Request, res: Response) => {
 export const deleteMessage = async (req: Request, res: Response) => {
   try {
     const { id } = req.params;
+
+    const checkMessage = await prisma.findUnique({
+      where: {
+        id: parseInt(id),
+      },
+    });
+
+    if (!checkMessage) {
+      return ErrorUtils.getNotFoundError(res);
+    }
 
     const userMessage = await prisma.delete({
       where: {
