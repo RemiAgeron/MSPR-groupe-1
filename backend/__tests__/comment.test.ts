@@ -4,8 +4,6 @@ const URL = 'http://localhost:5000';
 
 dotenv.config();
 
-// TODO: add tests for all comment routes
-
 describe('Comment', () => {
   let userToken: string;
   let userId: number;
