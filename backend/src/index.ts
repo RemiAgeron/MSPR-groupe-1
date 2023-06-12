@@ -8,7 +8,7 @@ import { userRoutes } from './routes/user.routes';
 import { botanistRoutes } from './routes/botanist.routes';
 
 // Messages routes
-import { messagingRoutes } from './routes/messaging.routes';
+import { messageRoutes } from './routes/message.routes';
 
 // Review routes
 import { reviewRoutes } from './routes/review.routes';
@@ -32,7 +32,7 @@ app.use('/api/user', userRoutes);
 app.use('/api/botanist', botanistRoutes);
 
 // Messages routes
-app.use('/api/messaging', messagingRoutes);
+app.use('/api/message', messageRoutes);
 
 // // Review routes
 app.use('/api/review', reviewRoutes);

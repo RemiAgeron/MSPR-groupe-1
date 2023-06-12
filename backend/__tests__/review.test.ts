@@ -5,4 +5,4 @@ const URL = 'http://localhost:5000';
 
 dotenv.config();
 
-// TODO: add tests for all conversation routes
+// TODO: add tests for all review routes

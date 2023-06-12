@@ -1,4 +1,5 @@
 import { PrismaClient } from '@prisma/client';
+import bcrypt = require('bcrypt');
 
 const prisma = new PrismaClient();
 
@@ -11,7 +12,7 @@ async function main() {
       firstname: 'dev',
       lastname: 'dev',
       email: 'dev@dev.dev',
-      password: 'dev',
+      password: bcrypt.hashSync('dev', 10),
       phone: '0606060606',
       description: 'dev',
     },
@@ -23,7 +24,7 @@ async function main() {
       email: 'test@test.com',
       firstname: 'test',
       lastname: 'test',
-      password: 'test',
+      password: bcrypt.hashSync('test', 10),
       phone: '0606060606',
     },
   });
@@ -39,12 +40,6 @@ async function main() {
     },
   });
   console.log({ botanist });
-
-  // const post = await prisma.posts.upsert({
-  //   where: { id: 1 },
-  //   update: {},
-  //   create: {
-  //     title: 'dev',
 }
 main()
   .then(async () => {

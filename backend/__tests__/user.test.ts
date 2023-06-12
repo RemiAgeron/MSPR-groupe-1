@@ -92,6 +92,7 @@ describe('User', () => {
 
       userToken = res.body.token;
       userId = res.body.id;
+      // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
       const decoded = jwt.verify(userToken, process.env.TOKEN_SECRET!);
       expect(decoded).toHaveProperty('id');
     });

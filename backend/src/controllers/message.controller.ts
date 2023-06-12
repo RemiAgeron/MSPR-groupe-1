@@ -5,7 +5,7 @@ import ErrorUtils from '../utils/error.utils';
 
 const prisma = new PrismaClient().messages;
 
-// GET /api/messaging
+// GET /api/message
 // Get all messages
 export const getMessages = async (req: Request, res: Response) => {
   try {
@@ -16,7 +16,7 @@ export const getMessages = async (req: Request, res: Response) => {
   }
 };
 
-// GET /api/messaging/:id
+// GET /api/message/:id
 // Get message by id
 export const getMessage = async (req: Request, res: Response) => {
   try {
@@ -42,7 +42,7 @@ export const getMessage = async (req: Request, res: Response) => {
   }
 };
 
-// GET /api/messaging/user/:id
+// GET /api/message/user/:id
 // Get message by user id
 export const getMessageByUser = async (req: Request, res: Response) => {
   try {
@@ -63,7 +63,7 @@ export const getMessageByUser = async (req: Request, res: Response) => {
   }
 };
 
-// POST /api/messaging
+// POST /api/message
 // Create message
 export const createMessage = async (req: Request, res: Response) => {
   try {
@@ -86,7 +86,7 @@ export const createMessage = async (req: Request, res: Response) => {
   }
 };
 
-// PATCH /api/messaging/:id
+// PATCH /api/message/:id
 // Update message
 export const updateMessage = async (req: Request, res: Response) => {
   try {
@@ -125,7 +125,7 @@ export const updateMessage = async (req: Request, res: Response) => {
   }
 };
 
-// DELETE /api/messaging/:id
+// DELETE /api/message/:id
 // Delete message
 export const deleteMessage = async (req: Request, res: Response) => {
   try {

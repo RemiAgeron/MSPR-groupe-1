@@ -55,7 +55,7 @@ export const login = async (req: Request, res: Response) => {
 // Register user
 export const register = async (req: Request, res: Response) => {
   try {
-    const { firstname, lastname, email, password, phone } = req.body;
+    const { firstname, lastname, email, password, phone, isAdmin } = req.body;
 
     if (!firstname || !lastname || !email || !password) {
       return ErrorUtils.getMissingFieldsError(res);
@@ -76,6 +76,7 @@ export const register = async (req: Request, res: Response) => {
             email: email,
             password: hashedPassword,
             phone: phone ? phone : undefined,
+            isAdmin: isAdmin ? isAdmin : false,
           },
         });
         if (!newUser) {

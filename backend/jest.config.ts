@@ -1,8 +1,6 @@
-import type {Config} from 'jest';
+import type { Config } from 'jest';
 import path from 'path';
 const rootDirector = path.resolve(__dirname);
-
-
 
 const config: Config = {
   verbose: true,
@@ -57,5 +55,5 @@ const config: Config = {
   },
   testRegex: ['((/__tests__/.*)|(\\.|/)(test|spec))\\.tsx?$'],
 };
-  
+
 export default config;
