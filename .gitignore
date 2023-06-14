@@ -2,7 +2,7 @@
 .idea
 .vscode
 
-# >>> env >>> # 
+# >>> env >>> #
 .env
 
 # >>> Node >>> #
@@ -15,7 +15,12 @@ dist
 
 # >>> Database >>> #
 postgres-data
+migrations
 
 # >>> Keys >>> #
 private.pem
 public.pem
+
+# >>> Tests >>> #
+coverage
+test-report.html

@@ -13,7 +13,7 @@ export const getPosts = async (req: Request, res: Response) => {
     const posts = await prismaPosts.findMany();
     return res.status(200).json(posts);
   } catch (error) {
-    return ErrorUtils.customError(error, res);
+    return ErrorUtils.getError(error, res);
   }
 };
 
@@ -22,10 +22,15 @@ export const getPosts = async (req: Request, res: Response) => {
 export const getPost = async (req: Request, res: Response) => {
   try {
     const { id } = req.params;
+    const parsedId = parseInt(id);
+
+    if (parsedId <= 0 || isNaN(parsedId)) {
+      return ErrorUtils.getBadRequestError(res);
+    }
 
     const post = await prismaPosts.findUnique({
       where: {
-        id: parseInt(id),
+        id: parsedId,
       },
     });
     if (!post) {
@@ -34,7 +39,7 @@ export const getPost = async (req: Request, res: Response) => {
       return res.status(200).json(post);
     }
   } catch (error) {
-    return ErrorUtils.customError(error, res);
+    return ErrorUtils.getError(error, res);
   }
 };
 
@@ -55,7 +60,7 @@ export const getPostsByUser = async (req: Request, res: Response) => {
       return res.status(200).json(posts);
     }
   } catch (error) {
-    return ErrorUtils.customError(error, res);
+    return ErrorUtils.getError(error, res);
   }
 };
 
@@ -66,13 +71,13 @@ export const createPost = async (req: Request, res: Response) => {
     const { title, content, senderId, tags } = req.body;
 
     if (!title || !content || !senderId) {
-      return res.status(400).json({ message: 'Missing fields' });
+      return ErrorUtils.getMissingFieldsError(res);
     }
 
     const user = await prismaUser.findUnique({ where: { id: senderId } });
 
     if (!user) {
-      return res.status(404).json({ message: 'User not found' });
+      return ErrorUtils.createError(res, 400, 'User not found');
     }
 
     let data = {
@@ -104,7 +109,7 @@ export const createPost = async (req: Request, res: Response) => {
 
     return res.status(201).json(post);
   } catch (error) {
-    return ErrorUtils.customError(error, res);
+    return ErrorUtils.getError(error, res);
   }
 };
 
@@ -115,8 +120,18 @@ export const updatePost = async (req: Request, res: Response) => {
     const { id } = req.params;
     const { title, content, tags } = req.body;
 
+    const checkPost = await prismaPosts.findUnique({
+      where: {
+        id: parseInt(id),
+      },
+    });
+
+    if (!checkPost) {
+      return ErrorUtils.getNotFoundError(res);
+    }
+
     if (!title && !content && !tags) {
-      return res.status(400).json({ message: 'Missing fields' });
+      return ErrorUtils.getMissingFieldsError(res);
     }
 
     let data = {};
@@ -140,10 +155,10 @@ export const updatePost = async (req: Request, res: Response) => {
       });
       return res.status(200).json(post);
     } else {
-      return res.status(400).json({ message: 'Missing fields' });
+      return ErrorUtils.getMissingFieldsError(res);
     }
   } catch (error) {
-    return ErrorUtils.customError(error, res);
+    return ErrorUtils.getError(error, res);
   }
 };
 
@@ -171,6 +186,6 @@ export const deletePost = async (req: Request, res: Response) => {
       return res.status(200).json(post);
     }
   } catch (error) {
-    return ErrorUtils.customError(error, res);
+    return ErrorUtils.getError(error, res);
   }
 };

@@ -12,7 +12,7 @@ export const getUsers = async (req: Request, res: Response) => {
     const users = await prisma.findMany();
     return res.status(200).json(users);
   } catch (error) {
-    return ErrorUtils.customError(error, res);
+    return ErrorUtils.getError(error, res);
   }
 };
 
@@ -21,10 +21,15 @@ export const getUsers = async (req: Request, res: Response) => {
 export const getUser = async (req: Request, res: Response) => {
   try {
     const { id } = req.params;
+    const parsedId = parseInt(id);
+
+    if (parsedId <= 0 || isNaN(parsedId)) {
+      return ErrorUtils.getBadRequestError(res);
+    }
 
     const user = await prisma.findUnique({
       where: {
-        id: parseInt(id),
+        id: parsedId,
       },
     });
     if (!user) {
@@ -33,7 +38,7 @@ export const getUser = async (req: Request, res: Response) => {
       return res.status(200).json(user);
     }
   } catch (error) {
-    return ErrorUtils.customError(error, res);
+    return ErrorUtils.getError(error, res);
   }
 };
 
@@ -45,7 +50,7 @@ export const updateUser = async (req: Request, res: Response) => {
     const { firstname, lastname, email, phone, description } = req.body;
 
     if (!firstname && !lastname && !email && !phone && !description) {
-      return res.status(400).json({ error: 'Missing fields' });
+      return ErrorUtils.getMissingFieldsError(res);
     } else {
       const checkUser = await prisma.findUnique({
         where: {
@@ -53,7 +58,7 @@ export const updateUser = async (req: Request, res: Response) => {
         },
       });
       if (!checkUser) {
-        return res.status(404).json({ error: 'User not found' });
+        return ErrorUtils.getNotFoundError(res);
       } else {
         let data = {};
         if (firstname) {
@@ -81,12 +86,12 @@ export const updateUser = async (req: Request, res: Response) => {
           });
           return res.status(200).json(user);
         } else {
-          return res.status(400).json({ error: 'Missing fields' });
+          return ErrorUtils.getMissingFieldsError(res);
         }
       }
     }
   } catch (error) {
-    return ErrorUtils.customError(error, res);
+    return ErrorUtils.getError(error, res);
   }
 };
 
@@ -96,20 +101,22 @@ export const deleteUser = async (req: Request, res: Response) => {
   try {
     const { id } = req.params;
 
+    const checkUser = await prisma.findUnique({
+      where: {
+        id: parseInt(id),
+      },
+    });
+
+    if (!checkUser) return ErrorUtils.getNotFoundError(res);
+
     const user = await prisma.delete({
       where: {
         id: parseInt(id),
       },
     });
-    
-    if (!user) {
-      return ErrorUtils.getNotFoundError(res);
-    } else {
-      return res
-        .status(200)
-        .json({ message: 'User deleted successfully', user });
-    }
+
+    return res.status(200).json({ message: 'User deleted successfully', user });
   } catch (error) {
-    return ErrorUtils.customError(error, res);
+    return ErrorUtils.getError(error, res);
   }
 };

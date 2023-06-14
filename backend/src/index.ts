@@ -1,6 +1,6 @@
 /* eslint-disable no-console */
 import dotenv = require('dotenv');
-import express from 'express';
+import express, { Application } from 'express';
 import bodyParser from 'body-parser';
 
 // User routes
@@ -8,7 +8,7 @@ import { userRoutes } from './routes/user.routes';
 import { botanistRoutes } from './routes/botanist.routes';
 
 // Messages routes
-import { messagingRoutes } from './routes/messaging.routes';
+import { messageRoutes } from './routes/message.routes';
 
 // Review routes
 import { reviewRoutes } from './routes/review.routes';
@@ -19,7 +19,7 @@ import { commentRoutes } from './routes/comment.routes';
 
 dotenv.config();
 
-const app = express();
+const app: Application = express();
 
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: false }));
@@ -32,7 +32,7 @@ app.use('/api/user', userRoutes);
 app.use('/api/botanist', botanistRoutes);
 
 // Messages routes
-app.use('/api/messaging', messagingRoutes);
+app.use('/api/message', messageRoutes);
 
 // // Review routes
 app.use('/api/review', reviewRoutes);

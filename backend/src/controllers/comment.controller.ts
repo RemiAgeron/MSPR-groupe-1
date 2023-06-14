@@ -4,6 +4,7 @@ import { Request, Response } from 'express';
 import ErrorUtils from '../utils/error.utils';
 
 const prisma = new PrismaClient().comments;
+const prismaPost = new PrismaClient().posts;
 
 // GET /api/comment
 // Get all comments
@@ -12,7 +13,7 @@ export const getComments = async (req: Request, res: Response) => {
     const comments = await prisma.findMany();
     return res.status(200).json(comments);
   } catch (error) {
-    return ErrorUtils.customError(error, res);
+    return ErrorUtils.getError(error, res);
   }
 };
 
@@ -21,7 +22,7 @@ export const getComments = async (req: Request, res: Response) => {
 export const getComment = async (req: Request, res: Response) => {
   try {
     const { id } = req.params;
-
+    
     const comment = await prisma.findUnique({
       where: {
         id: parseInt(id),
@@ -33,7 +34,7 @@ export const getComment = async (req: Request, res: Response) => {
       return res.status(200).json(comment);
     }
   } catch (error) {
-    return ErrorUtils.customError(error, res);
+    return ErrorUtils.getError(error, res);
   }
 };
 
@@ -54,7 +55,7 @@ export const getCommentByUser = async (req: Request, res: Response) => {
       return res.status(200).json(user);
     }
   } catch (error) {
-    return ErrorUtils.customError(error, res);
+    return ErrorUtils.getError(error, res);
   }
 };
 
@@ -63,6 +64,16 @@ export const getCommentByUser = async (req: Request, res: Response) => {
 export const getCommentByPost = async (req: Request, res: Response) => {
   try {
     const postId = req.params.id;
+
+    const postExists = await prismaPost.findUnique({
+      where: {
+        id: parseInt(postId),
+      },
+    });
+
+    if (!postExists) {
+      return ErrorUtils.getNotFoundError(res);
+    }
 
     const post = await prisma.findMany({
       where: {
@@ -75,7 +86,7 @@ export const getCommentByPost = async (req: Request, res: Response) => {
       return res.status(200).json(post);
     }
   } catch (error) {
-    return ErrorUtils.customError(error, res);
+    return ErrorUtils.getError(error, res);
   }
 };
 
@@ -85,6 +96,20 @@ export const createComment = async (req: Request, res: Response) => {
   try {
     const { content, senderId, postId } = req.body;
 
+    if (!content || !senderId || !postId) {
+      return ErrorUtils.getMissingFieldsError(res);
+    }
+
+    const checkPost = await prismaPost.findUnique({
+      where: {
+        id: parseInt(postId),
+      },
+    });
+
+    if (!checkPost) {
+      return ErrorUtils.getNotFoundError(res);
+    }
+
     const comment = await prisma.create({
       data: {
         content: content,
@@ -92,13 +117,13 @@ export const createComment = async (req: Request, res: Response) => {
         postId: postId,
       },
     });
-    return res.status(200).json(comment);
+    return res.status(201).json(comment);
   } catch (error) {
-    return ErrorUtils.customError(error, res);
+    return ErrorUtils.getError(error, res);
   }
 };
 
-// PUT /api/comment/:id
+// PATCH /api/comment/:id
 // Update comment
 export const updateComment = async (req: Request, res: Response) => {
   try {
@@ -106,6 +131,16 @@ export const updateComment = async (req: Request, res: Response) => {
     const { content } = req.body;
 
     if (!content) return ErrorUtils.getMissingFieldsError(res);
+
+    const commentExists = await prisma.findUnique({
+      where: {
+        id: parseInt(id),
+      },
+    });
+
+    if (!commentExists) {
+      return ErrorUtils.getNotFoundError(res);
+    }
 
     const comment = await prisma.update({
       where: {
@@ -117,7 +152,7 @@ export const updateComment = async (req: Request, res: Response) => {
     });
     return res.status(200).json(comment);
   } catch (error) {
-    return ErrorUtils.customError(error, res);
+    return ErrorUtils.getError(error, res);
   }
 };
 
@@ -127,6 +162,16 @@ export const deleteComment = async (req: Request, res: Response) => {
   try {
     const { id } = req.params;
 
+    const commentExists = await prisma.findUnique({
+      where: {
+        id: parseInt(id),
+      },
+    });
+
+    if (!commentExists) {
+      return ErrorUtils.getNotFoundError(res);
+    }
+
     const comment = await prisma.delete({
       where: {
         id: parseInt(id),
@@ -134,6 +179,6 @@ export const deleteComment = async (req: Request, res: Response) => {
     });
     return res.status(200).json({ message: 'Comment deleted successfully', comment });
   } catch (error) {
-    return ErrorUtils.customError(error, res);
+    return ErrorUtils.getError(error, res);
   }
 };

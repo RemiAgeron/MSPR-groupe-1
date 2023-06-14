@@ -4,6 +4,7 @@ import { Request, Response } from 'express';
 import ErrorUtils from '../utils/error.utils';
 
 const prisma = new PrismaClient().botanists;
+const prismaUser = new PrismaClient().users;
 
 // GET /api/botanist
 // Get all botanists
@@ -12,7 +13,7 @@ export const getBotanists = async (req: Request, res: Response) => {
     const bontanists = await prisma.findMany();
     return res.status(200).json(bontanists);
   } catch (error) {
-    return ErrorUtils.customError(error, res);
+    return ErrorUtils.getError(error, res);
   }
 };
 
@@ -33,7 +34,7 @@ export const getBotanist = async (req: Request, res: Response) => {
       return res.status(200).json(botanist);
     }
   } catch (error) {
-    return ErrorUtils.customError(error, res);
+    return ErrorUtils.getError(error, res);
   }
 };
 
@@ -54,7 +55,7 @@ export const getBotanistByUser = async (req: Request, res: Response) => {
       return res.status(200).json(user);
     }
   } catch (error) {
-    return ErrorUtils.customError(error, res);
+    return ErrorUtils.getError(error, res);
   }
 };
 
@@ -68,14 +69,14 @@ export const createBotanist = async (req: Request, res: Response) => {
       return res.status(400).json({ error: 'Missing fields' });
     }
 
-    const checkUser = await prisma.findMany({
+    const checkUser = await prismaUser.findUnique({
       where: {
-        userId: parseInt(userId),
+        id: parseInt(userId),
       },
     });
 
-    if (checkUser.length > 0) {
-      return res.status(400).json({ error: 'User is already a botanist' });
+    if (!checkUser) {
+      return res.status(404).json({ error: 'User not found' });
     }
 
     const botanist = await prisma.create({
@@ -92,7 +93,7 @@ export const createBotanist = async (req: Request, res: Response) => {
       return res.status(201).json(botanist);
     }
   } catch (error) {
-    return ErrorUtils.customError(error, res);
+    return ErrorUtils.getError(error, res);
   }
 };
 
@@ -133,7 +134,7 @@ export const updateBotanist = async (req: Request, res: Response) => {
       }
     }
   } catch (error) {
-    return ErrorUtils.customError(error, res);
+    return ErrorUtils.getError(error, res);
   }
 };
 
@@ -161,6 +162,6 @@ export const deleteBotanist = async (req: Request, res: Response) => {
         .json({ message: 'Botanist deleted successfully', botanist });
     }
   } catch (error) {
-    return ErrorUtils.customError(error, res);
+    return ErrorUtils.getError(error, res);
   }
 };
