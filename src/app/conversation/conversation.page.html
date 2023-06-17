@@ -1,0 +1,38 @@
+<ion-header>
+  <ion-toolbar class="tool1">
+    <ion-buttons slot="start">
+      <ion-button color="black" routerLink="/messages">
+        <ion-icon slot="icon-only" name="arrow-back"></ion-icon>
+      </ion-button>
+    </ion-buttons>
+    <ion-avatar class="" slot="start">
+      <ion-img src="/assets/logo.png"></ion-img>
+    </ion-avatar>
+    <ion-title> user.name </ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content>
+  <ion-list lines="none">
+    <ion-item ngFor="let message of messages" class="message.isSent ? 'sent' : 'received'">
+      <ion-avatar slot="start">
+        <ion-img src="/assets/logo.png"></ion-img>
+      </ion-avatar>
+      <ion-label> message.text </ion-label>
+    </ion-item>
+  </ion-list>
+
+ 
+</ion-content>
+<div>
+<ion-footer id="footer">
+  <ion-toolbar class="tool2">
+    <ion-input placeholder="  Type a message..."></ion-input>
+    <ion-buttons slot="end">
+      <ion-button click="sendMessage()">
+        <ion-icon slot="icon-only" name="send"></ion-icon>
+      </ion-button>
+    </ion-buttons>
+  </ion-toolbar>
+</ion-footer>
+</div>

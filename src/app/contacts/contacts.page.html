@@ -1,0 +1,29 @@
+<ion-header [translucent]="true">
+  <ion-toolbar>
+   <ion-title size="large">Contacts
+    </ion-title>
+    <ion-buttons slot="start">
+      <ion-button color="black" routerLink="/messages">
+        <ion-icon slot="icon-only" name="arrow-back"></ion-icon>
+      </ion-button>
+    </ion-buttons>
+  </ion-toolbar>
+</ion-header>
+<ion-content [fullscreen]="true"> 
+
+  <ion-list>
+ 
+    <ion-item id="item" ngFor="let conversation of conversations">
+      <ion-avatar slot="start">
+        <ion-img class="pctr" src="/assets/logo.png"></ion-img>
+      </ion-avatar>
+      <ion-buttons id="btn3" routerLink="/conversation" >
+        <ion-label>
+        <h2 > contact.name</h2>
+        </ion-label>
+      </ion-buttons>
+    </ion-item>
+  
+  </ion-list>
+  
+</ion-content>

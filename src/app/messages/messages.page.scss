@@ -1,0 +1,40 @@
+ion-title{
+    text-align: center;
+}
+ion-toolbar{
+    --background:  #729d72;
+}
+ion-content{
+    --background: #B3C9B3;
+}
+#icon2{
+    
+        position: absolute;
+        top: 20px;
+        right: 20px;
+        height: 70px;
+        width: 70px;
+        font-size: 60px;
+    
+        color: #617c61;
+} 
+ion-list{ 
+  
+    margin-top: 90px;
+    background-color: #B3C9B3; 
+
+}
+#item {
+    border-radius: 30px;
+
+}
+h2{
+    font-size: 20px;
+}
+ion-avatar{
+    width: 60px;
+    height: 60px;
+}
+.pctr{
+   font-size: 70px;
+}

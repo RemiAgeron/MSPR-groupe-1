@@ -1,0 +1,56 @@
+<ion-header [translucent]="true">
+  <ion-toolbar>
+   <ion-title size="large">Messages
+    </ion-title>
+    <ion-buttons slot="start">
+      <ion-button color="black" routerLink="/home">
+        <ion-icon slot="icon-only" name="arrow-back"></ion-icon>
+      </ion-button>
+    </ion-buttons>
+    <ion-buttons slot="end">
+      <ion-button fill="clear" id="popover" >
+        <ion-icon slot="icon-only" name="ellipsis-vertical-outline"></ion-icon> 
+      </ion-button>
+    </ion-buttons>
+    <ion-popover #popover trigger="popover" triggerAction="click">
+      <ng-template  lines="full">
+        
+        <ion-content class="ion-padding ion-text-center" routerLink="/profile">
+          <ion-label color="black"> 
+             PROFILE 
+          </ion-label>
+        </ion-content>
+        <ion-content class="ion-padding ion-text-center" onclick="" routerLink="/login">
+          <ion-label color="black"> 
+             LOGOUT
+          </ion-label>
+        </ion-content>
+    
+      </ng-template>
+    </ion-popover>
+  </ion-toolbar>
+</ion-header>
+<ion-content [fullscreen]="true"> 
+  <ion-buttons >
+    <ion-button  fill="clear" id="icon2" routerLink="/contacts">
+      <ion-icon slot="icon-only" name='add-circle-outline'></ion-icon> 
+    </ion-button>
+  </ion-buttons>
+  <ion-list>
+ 
+    <ion-item id="item" ngFor="let conversation of conversations">
+      <ion-avatar slot="start">
+        <ion-img class="pctr" src="/assets/logo.png"></ion-img>
+      </ion-avatar>
+      <ion-buttons id="btn3" routerLink="/conversation" >
+        <ion-label>
+        <h2 > conversation.name</h2>
+        <p>conversation.message</p>
+        <p class="date">conversation.date</p>
+        </ion-label>
+      </ion-buttons>
+    </ion-item>
+  
+  </ion-list>
+  
+</ion-content>
