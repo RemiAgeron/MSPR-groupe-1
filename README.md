@@ -1,35 +1,54 @@
-# MSPR Arosaje
+# 🌱 Arosaje 🌱
+---
 
-Ce projet est un projet d'étude pour le bachelor concepteur et développeur d'application de l'EPSI.
+Ce projet est un projet d'étude réalisé dans le cadre du **Bachelor Concepteur Développeur d'Applications** à l'EPSI de Toulouse.
 
-## Installation
+## Équipe
+- Tristan Besombe
+- Thomas Loubat
+- Rémi Ageron
+- Théo Robillard
+- Marouane 
 
-### Prérequis
+## Technologies utilisée
+- Express
+- Postgres
+- Ionic Angular 
 
+---
+## Prérequis
 - Docker
 - Docker-compose
 - NodeJS
 - NPM
 
-### Développement
+## Installation
 
-Démarrer les conteneurs avec :
-
+1.  Lancer les conteneurs
 ```bash
 docker-compose up --build
 ```
-#### Backend
+### Backend
 
-Installer les paquets et initialiser la BDD :
+*Les commandes ci-dessous doivent être réalisés dans le répertoire **backend**.*
 
+2.  Initialiser le backend:
 ```bash
-make start
+cd backend/
+make init
+```
+3.  Insérer les données de base de la BDD (optionnel):
+```bash
+make seed
 ```
 
-Visualiser les données de la BDD :
-
-Utiliser **Adminer** à l'adresse http://localhost:5555 ou utiliser **Prisma Studio** :
-
+4. Visualiser les données : Adminer sur le **port 8080** ou
 ```bash
-docker-compose exec backend npx prisma studio
+make studio
 ```
+
+ ### Frontend
+
+*Les commandes ci-dessous doivent être réalisés dans le répertoire **frontend**.*
+
+**[WIP]**

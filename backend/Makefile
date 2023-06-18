@@ -2,7 +2,7 @@
 
 .PHONY: help
 
-start: up install schema migrate ## Start the application
+init: install validate-schema schema migrate ## Start the application
 
 up: ## Start the application
 	@echo "Starting the application..."
