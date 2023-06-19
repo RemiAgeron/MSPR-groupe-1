@@ -2,6 +2,7 @@
 import dotenv = require('dotenv');
 import express, { Application } from 'express';
 import bodyParser from 'body-parser';
+import morgan from 'morgan';
 
 // User routes
 import { userRoutes } from './routes/user.routes';
@@ -23,6 +24,7 @@ const app: Application = express();
 
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: false }));
+app.use(morgan('dev'));
 
 const HTTP_PORT = process.env.PORT || 5000;
 

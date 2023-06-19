@@ -1,5 +1,4 @@
 # 🌱 Arosaje 🌱
----
 
 Ce projet est un projet d'étude réalisé dans le cadre du **Bachelor Concepteur Développeur d'Applications** à l'EPSI de Toulouse.
 
@@ -15,7 +14,6 @@ Ce projet est un projet d'étude réalisé dans le cadre du **Bachelor Concepteu
 - Postgres
 - Ionic Angular 
 
----
 ## Prérequis
 - Docker
 - Docker-compose
