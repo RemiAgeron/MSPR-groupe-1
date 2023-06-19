@@ -68,7 +68,7 @@ export const getPostsByUser = async (req: Request, res: Response) => {
 // Create post
 export const createPost = async (req: Request, res: Response) => {
   try {
-    const { title, content, senderId, tags } = req.body;
+    const { title, content, senderId, tags, picture } = req.body;
 
     if (!title || !content || !senderId) {
       return ErrorUtils.getMissingFieldsError(res);
@@ -101,6 +101,20 @@ export const createPost = async (req: Request, res: Response) => {
           };
         };
       };
+    }
+
+    if(picture !== null && picture !== undefined) {
+      data = { ...data, picture: picture } as {
+        title: string;
+        content: string;
+        [key: string]: unknown;
+        sender: {
+          connect: {
+            id: number;
+          };
+        };
+        tags?: string;
+      }
     }
 
     const post = await prismaPosts.create({
