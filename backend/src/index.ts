@@ -2,6 +2,9 @@
 import dotenv = require('dotenv');
 import express, { Application } from 'express';
 import bodyParser from 'body-parser';
+import morgan from 'morgan';
+import cors from 'cors';
+// import multer from 'multer';
 
 // User routes
 import { userRoutes } from './routes/user.routes';
@@ -21,8 +24,11 @@ dotenv.config();
 
 const app: Application = express();
 
+// Middlewares
+app.use(cors());
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: false }));
+app.use(morgan('dev'));
 
 const HTTP_PORT = process.env.PORT || 5000;
 
