@@ -1,0 +1,81 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-buttons slot="start">
+      <ion-back-button ></ion-back-button>
+    </ion-buttons>
+    <ion-title>{{ user.firstname }} {{ user.lastname }}</ion-title>
+    <ion-buttons slot="end">
+      <ion-button href="/user/8">
+        <ion-icon name="person-circle-outline"></ion-icon>
+      </ion-button>
+    </ion-buttons>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content>
+  <ion-item class="ion-margin-vertical">
+    <ion-img class="biography" alt="User profile's picture" src="assets/user.svg" />
+    <ion-label margin>
+      <ion-grid>
+        <ion-col>{{ user.firstname }}</ion-col>
+        <ion-col>{{ user.lastname }}</ion-col>
+      </ion-grid>
+      <p>{{ user.biography }}</p>
+    </ion-label>
+  </ion-item>
+  <div class="ion-padding-horizontal sticky">
+    <ion-segment value="{{ segmentChoice }}" (ionChange)="handleChange($event)">
+      <ion-segment-button value="publication">
+        <ion-label>Publications</ion-label>
+      </ion-segment-button>
+      <ion-segment-button value="review">
+        <ion-label>Review</ion-label>
+      </ion-segment-button>
+    </ion-segment>
+  </div>
+  <div>
+    <div *ngIf="segmentChoice === 'publication'">
+      <ion-title *ngIf="user.publications.length === 0">Aucunes publications</ion-title>
+      <ion-grid>
+        <ion-row>
+          <ion-col size="4" *ngFor="let item of user.publications">
+            <a href="/feed">
+              <ion-img class="publication" src="assets/plant.svg" />
+            </a>
+          </ion-col>
+        </ion-row>
+      </ion-grid>
+    </div>
+    <div *ngIf="segmentChoice === 'review'">
+      <ion-title *ngIf="user.reviews.length === 0">Aucunes reviews</ion-title>
+      <ion-list>
+        <ion-item button *ngFor="let item of user.reviews">
+          <ion-avatar slot="start">
+            <ion-img class="review" alt="Item's type icon" src="assets/user.svg" />
+          </ion-avatar>
+          <ion-label margin>
+            <ion-grid>
+              <ion-col>{{ item.user.firstname }}</ion-col>
+              <ion-col>{{ item.user.lastname }}</ion-col>
+            </ion-grid>
+            <p>{{ item.message }}</p>
+          </ion-label>
+        </ion-item>
+      </ion-list>
+    </div>
+  </div>
+</ion-content>
+
+<ion-tab-bar slot="bottom">
+  <ion-tab-button href="/tabs/tab1">
+    <ion-icon aria-hidden="true" name="home-outline"></ion-icon>
+  </ion-tab-button>
+
+  <ion-tab-button href="/tabs/tab2">
+    <ion-icon aria-hidden="true" name="search-outline"></ion-icon>
+  </ion-tab-button>
+
+  <ion-tab-button href="/tabs/tab3">
+    <ion-icon aria-hidden="true" name="person-outline"></ion-icon>
+  </ion-tab-button>
+</ion-tab-bar>

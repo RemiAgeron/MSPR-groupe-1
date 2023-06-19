@@ -14,9 +14,9 @@ const generateHash = async (password: string) => {
   return await bcrypt.hash(password, salt);
 };
 
-const generateAccessToken = (id: number) => {
+const generateAccessToken = (id: number, isAdmin: boolean) => {
   // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
-  return jwt.sign({ id: id }, process.env.TOKEN_SECRET!, { expiresIn: '24h' });
+  return jwt.sign({ id: id, isAdmin: isAdmin }, process.env.TOKEN_SECRET!, { expiresIn: '24h' });
 };
 
 // POST /api/user/login
@@ -41,7 +41,7 @@ export const login = async (req: Request, res: Response) => {
         if (!hashedPassword) {
           return ErrorUtils.createError(res, 401, 'Wrong password');
         } else {
-          const token = generateAccessToken(user.id);
+          const token = generateAccessToken(user.id, user.isAdmin);
           return res.status(200).json({ id: user.id, token: token });
         }
       }
@@ -55,7 +55,7 @@ export const login = async (req: Request, res: Response) => {
 // Register user
 export const register = async (req: Request, res: Response) => {
   try {
-    const { firstname, lastname, email, password, phone } = req.body;
+    const { firstname, lastname, email, password, phone, isAdmin } = req.body;
 
     if (!firstname || !lastname || !email || !password) {
       return ErrorUtils.getMissingFieldsError(res);
@@ -76,12 +76,13 @@ export const register = async (req: Request, res: Response) => {
             email: email,
             password: hashedPassword,
             phone: phone ? phone : undefined,
+            isAdmin: isAdmin ? isAdmin : false,
           },
         });
         if (!newUser) {
-          throw new Error('Error creating user');
+          return ErrorUtils.createError(res, 400, 'Error when creating user');
         } else {
-          const token = generateAccessToken(newUser.id);
+          const token = generateAccessToken(newUser.id, newUser.isAdmin);
 
           return res.status(201).json({ id: newUser.id, token: token });
         }
