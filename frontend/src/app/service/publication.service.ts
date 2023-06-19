@@ -1,41 +1,17 @@
+import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
+import { environment } from 'src/environments/environment';
 
 @Injectable({
   providedIn: 'root'
 })
 export class PublicationService {
-  private publications: Publication[] = [];
 
-  constructor() { }
+  constructor( private http: HttpClient) { }
 
-  getPublications(): Publication[] {
-    return this.publications;
+  getPublications(){
+    return this.http.get(environment.baseUrl + 'post')
   }
 
-  addPublication(publication: Publication): void {
-    this.publications.push(publication);
-  }
-
-  deletePublication(publication: Publication): void {
-    const index = this.publications.indexOf(publication);
-    if (index > -1) {
-      this.publications.splice(index, 1);
-    }
-  }
 }
 
-export class Publication {
-  constructor(
-    public id: number,
-    public imageUrl: string,
-    public description: string,
-    public comments: Comment[]
-  ) {}
-}
-
-export class Comment {
-  constructor(
-    public id: number,
-    public text: string
-  ) {}
-}

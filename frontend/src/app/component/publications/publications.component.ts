@@ -1,27 +1,43 @@
-import { Component, OnInit } from '@angular/core';
-import { Publication, PublicationService } from 'src/app/service/publication.service';
+import { Component } from '@angular/core';
+import { HttpClient } from '@angular/common/http';
+import { PublicationService } from 'src/app/service/publication.service';
+import { IonicModule } from '@ionic/angular';
+import { CommonModule } from '@angular/common';
+import { SharedModule } from 'src/app/shared/shared.module';
 
 @Component({
   selector: 'app-publications',
-  template: `
-    <ion-list>
-      <ion-item *ngFor="let publication of publications">
-        <img [src]="publication.imageUrl" />
-        <h2>{{ publication.description }}</h2>
-        <ion-list>
-          <ion-item *ngFor="let comment of publication.comments">
-            {{ comment.text }}
-          </ion-item>
-        </ion-list>
-      </ion-item>
-    </ion-list>
-  `
+  standalone:true,
+  templateUrl: './publications.component.html',
+  styleUrls: ['./publications.component.scss'],
+  imports: [IonicModule, CommonModule, SharedModule],
 })
-
 export class PublicationsComponent {
-  publications: Publication[];
 
-  constructor(private publicationService: PublicationService) {
-    this.publications = publicationService.getPublications();
+  publications: any[] = [];
+
+  constructor(private publicationService : PublicationService) {
+    this.getPublications()
   }
+
+  ngOnInit() {
+    this.getPublications()
+  }
+
+
+  getPublications(){
+    this.publicationService.getPublications().subscribe({
+      next: (res: any) => {
+        this.publications.push(...res)
+        console.log(this.publications);
+      }
+    })
+  }
+  
+  // fetchPublications(): void {
+  //   this.http.get<Publication[]>('http://localhost:8100/api/post')
+  //     .subscribe((data: Publication[]) => {
+  //       this.publications = data;
+  //     });
+  // }
 }
