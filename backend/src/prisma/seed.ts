@@ -40,6 +40,40 @@ async function main() {
     },
   });
   console.log({ botanist });
+
+  const Bambou = await prisma.plants.upsert({
+    where: { id: 1 },
+    update: {},
+    create: {
+      name: 'Bambou',
+      family: 'Bambusa',
+    },
+  });
+  const Sapin = await prisma.plants.upsert({
+    where: { id: 2 },
+    update: {},
+    create: {
+      name: 'Sapin',
+      family: 'Abies',
+    },
+  });
+  const Erable = await prisma.plants.upsert({
+    where: { id: 3 },
+    update: {},
+    create: {
+      name: 'Erable',
+      family: 'Acer',
+    },
+  });
+  const Hetre = await prisma.plants.upsert({
+    where: { id: 4 },
+    update: {},
+    create: {
+      name: 'Hetre',
+      family: 'Fagus',
+    },
+  });
+  console.log({ Bambou, Sapin, Erable, Hetre });
 }
 main()
   .then(async () => {

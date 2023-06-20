@@ -40,16 +40,5 @@ services:
     networks:
       - arosaje-network
 
-  frontend:
-    container_name: frontend
-    build:
-      context: ./frontend
-      dockerfile: Dockerfile
-    restart: on-failure
-    ports:
-      - "8100:8100"
-    networks:
-      - arosaje-network
-
 networks:
   arosaje-network:
