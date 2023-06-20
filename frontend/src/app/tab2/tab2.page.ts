@@ -7,7 +7,8 @@ import { HttpClient } from '@angular/common/http';
 interface Item {
   id: number,
   name: string,
-  type: 'user' | 'botanist' | 'plant'
+  type: 'user' | 'botanist' | 'plant',
+  link?: string
 }
 
 @Component({
@@ -20,25 +21,25 @@ interface Item {
 export class Tab2Page {
   publications!: Item[];
 
-  constructor(public http: HttpClient) {
-    this.setData();
-  }
+  constructor(public http: HttpClient) {}
 
-  public data: any[] = [];
-  public results: any[] = [];
+  public data: Item[] = [];
+  public results: Item[] = [];
   public inputQuery?: string;
   public segmentQuery: string = "all";
 
-  setData() {
-    // const url = 'http://127.0.0.1:5000';
-    // const body = {input: this.inputQuery};
+  setLink(item: Item) {
+    item.link = item.type === "plant" ? "plant/" : "user/" + item.id;
+    return item
+  }
 
+  setData() {
     if ((this.inputQuery || "").length > 0) {
-      this.http.post<Item[]>('http://127.0.0.1:5000', {input: this.inputQuery}, {})
+      this.http.post<Item[]>('http://127.0.0.1:5000/api/search/', {input: this.inputQuery})
         .subscribe(
           (response) => {
-            console.log('Réponse :', response);
-            this.data = response;
+            this.data = response.map(item => this.setLink(item));
+            this.setResults();
             return;
           },
           (error) => {
@@ -48,6 +49,7 @@ export class Tab2Page {
     }
 
     this.data = [];
+    this.setResults();
   }
 
   setResults() {
@@ -66,10 +68,6 @@ export class Tab2Page {
   handleChange(event: any) {
     this.segmentQuery = event.target.value.toLowerCase();
     this.setResults();
-  }
-
-  handleClick(item: any) {
-    console.log(item);
   }
 
 }
