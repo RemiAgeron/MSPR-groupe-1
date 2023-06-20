@@ -27,12 +27,20 @@ export const getAllByFullname = async (req: Request, res: Response) => {
         Botanist: true,
       },
       where: {
-        firstname: {
-          contains: input
-        },
-        lastname: {
-          contains: input
-        },
+        OR: [
+          {
+            firstname: {
+              contains: input,
+              mode: 'insensitive'
+            }
+          },
+          {
+            lastname: {
+              contains: input,
+              mode: 'insensitive'
+            }
+          },
+        ]
       },
     });
 
@@ -43,12 +51,20 @@ export const getAllByFullname = async (req: Request, res: Response) => {
     // Get plants
     const plant = await prisma.plants.findMany({
       where: {
-        name: {
-          contains: input
-        },
-        family: {
-          contains: input
-        },
+        OR: [
+          {
+            name: {
+              contains: input,
+              mode: 'insensitive'
+            }
+          },
+          {
+            family: {
+              contains: input,
+              mode: 'insensitive'
+            }
+          },
+        ]
       },
     });
 
