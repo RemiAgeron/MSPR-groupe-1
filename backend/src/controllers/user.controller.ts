@@ -4,6 +4,7 @@ import { Request, Response } from 'express';
 import ErrorUtils from '../utils/error.utils';
 
 const prisma = new PrismaClient().users;
+const prismaReviews = new PrismaClient().reviews;
 
 // GET /api/user
 // Get all users
@@ -35,6 +36,44 @@ export const getUser = async (req: Request, res: Response) => {
     if (!user) {
       return ErrorUtils.getNotFoundError(res);
     } else {
+      return res.status(200).json(user);
+    }
+  } catch (error) {
+    return ErrorUtils.getError(error, res);
+  }
+};
+
+// GET /api/user/profile/:id
+// Get user profile by id
+export const getUserProfile = async (req: Request, res: Response) => {
+  try {
+    const { id } = req.params;
+    const parsedId = parseInt(id);
+
+    if (parsedId <= 0 || isNaN(parsedId)) {
+      return ErrorUtils.getBadRequestError(res);
+    }
+
+    const user = await prisma.findUnique({
+      where: {
+        id: parsedId,
+      },
+      include: {
+        Botanist: true,
+        Post: true,
+      }
+    });
+    if (!user) {
+      return ErrorUtils.getNotFoundError(res);
+    } else {
+      if (user.Botanist.length > 0) {
+        const Review = await prismaReviews.findMany({
+          where: {
+            botanistId: user.Botanist[0].id,
+          },
+        });
+        return res.status(200).json({ ...user, Review: Review });
+      }
       return res.status(200).json(user);
     }
   } catch (error) {
