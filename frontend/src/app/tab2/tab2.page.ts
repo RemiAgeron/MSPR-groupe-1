@@ -2,10 +2,12 @@ import { Component } from '@angular/core';
 import { IonicModule } from '@ionic/angular';
 import { ExploreContainerComponent } from '../explore-container/explore-container.component';
 import { CommonModule } from '@angular/common';
+import { HttpClient } from '@angular/common/http';
 
 interface Item {
-  name: string;
-  type: "user" | "plant" | "botanist";
+  id: number,
+  name: string,
+  type: 'user' | 'botanist' | 'plant'
 }
 
 @Component({
@@ -16,54 +18,57 @@ interface Item {
   imports: [IonicModule, ExploreContainerComponent, CommonModule]
 })
 export class Tab2Page {
+  publications!: Item[];
 
-  public data: Item[] = [
-    {name: "Mary Wonder", type: "user"},
-    {name: "John Doe", type: "user"},
-    {name: "Kyle Wonder", type: "user"},
-    {name: "Rose Award", type: "user"},
-    {name: "Rémi Ageron", type: "user"},
-    {name: "Mary Jam", type: "botanist"},
-    {name: "Jane Doe", type: "botanist"},
-    {name: "Henry Dubois", type: "botanist"},
-    {name: "Théo Robillard", type: "botanist"},
-    {name: "ABIES SAPIN", type: "plant"},
-    {name: "ACER ERABLE", type: "plant"},
-    {name: "BETULA BOULEAU", type: "plant"},
-    {name: "FAGUS HETRE", type: "plant"},
-    {name: "FRAXINUS FRENE", type: "plant"},
-    {name: "MORUS MURIER", type: "plant"},
-    {name: "PYRUS POIRIER", type: "plant"},
-    {name: "QUERCUS CHENE", type: "plant"},
-  ];
-  public results: Item[] = [];
+  constructor(public http: HttpClient) {
+    this.setData();
+  }
+
+  public data: any[] = [];
+  public results: any[] = [];
   public inputQuery?: string;
   public segmentQuery: string = "all";
 
-  setResults() {
-    let filteredResults = this.data;
-    if (this.segmentQuery !== "all") {
-      filteredResults = filteredResults.filter((d) => d.type.toLowerCase() === this.segmentQuery);
-    }
+  setData() {
+    // const url = 'http://127.0.0.1:5000';
+    // const body = {input: this.inputQuery};
+
     if ((this.inputQuery || "").length > 0) {
-      filteredResults = filteredResults.filter((d) => d.name.toLowerCase().indexOf(this.inputQuery || "") > -1);
-    } else {
-      filteredResults = [];
+      this.http.post<Item[]>('http://127.0.0.1:5000', {input: this.inputQuery}, {})
+        .subscribe(
+          (response) => {
+            console.log('Réponse :', response);
+            this.data = response;
+            return;
+          },
+          (error) => {
+            console.error('Erreur :', error);
+          }
+        )
     }
-    this.results = filteredResults;
+
+    this.data = [];
+  }
+
+  setResults() {
+    if (this.segmentQuery !== "all") {
+      this.results = this.data.filter((d) => d.type.toLowerCase() === this.segmentQuery);
+    } else {
+      this.results = this.data;
+    }
   }
 
   handleInput(event: any) {
     this.inputQuery = event.target.value.toLowerCase();
-    this.setResults();
+    this.setData();
   }
 
   handleChange(event: any) {
-    this.segmentQuery = event.target.value;
+    this.segmentQuery = event.target.value.toLowerCase();
     this.setResults();
   }
 
-  handleClick(item: Item) {
+  handleClick(item: any) {
     console.log(item);
   }
 
