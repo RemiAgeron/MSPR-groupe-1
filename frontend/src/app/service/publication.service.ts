@@ -13,5 +13,9 @@ export class PublicationService {
     return this.http.get(environment.baseUrl + 'post')
   }
 
+  getUserNameById(userId: string) {
+    return this.http.get(environment.baseUrl + 'user/${userId}');
+  }
+
 }
 

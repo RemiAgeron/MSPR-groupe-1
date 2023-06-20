@@ -15,6 +15,8 @@ import { SharedModule } from 'src/app/shared/shared.module';
 export class PublicationsComponent {
 
   publications: any[] = [];
+  showFullDescription: { [key: string]: boolean } = {};
+
 
   constructor(private publicationService : PublicationService) {
     this.getPublications()
@@ -32,6 +34,16 @@ export class PublicationsComponent {
         console.log(this.publications);
       }
     })
+  }
+  
+  // getUserNameById(userId: string){
+  //   this.publicationService.getUserNameById().subscribe({
+
+  //   })
+  // }
+
+  toggleDescription(publicationId: string): void {
+    this.showFullDescription[publicationId] = !this.showFullDescription[publicationId];
   }
   
   // fetchPublications(): void {

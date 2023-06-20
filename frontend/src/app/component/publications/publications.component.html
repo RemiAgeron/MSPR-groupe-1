@@ -1,11 +1,33 @@
-<!-- <ion-list>
-  <ion-item *ngFor="let publication of publications">
-    <h2>{{ publication.title }}</h2>
-    <h3>{{ publication.content }}</h3>
-    <ion-list>
-      <ion-item *ngFor="let comment of publication.comments">
-        {{ comment.text }}
-      </ion-item>
-    </ion-list>
-  </ion-item>
-</ion-list> -->
+  <ion-card *ngFor="let publication of publications">
+    <img class="imgPublication" src="../../../assets/plante_fond.jpg">
+    <img src="../../../assets/user.svg" class="imgUser">
+    <!-- <ion-card-header style="border: 1px solid red;"> -->
+      <!-- <ion-card-title>Rémi</ion-card-title> -->
+    <!-- </ion-card-header> -->
+    <ion-card-content>
+      <div *ngIf="showFullDescription[publication.id]">
+        {{ publication.content }}
+      </div>
+      <div *ngIf="!showFullDescription[publication.id]">
+        <p class="description">{{ publication.content | slice:0:30 }}{{ publication.content.length > 30 ? '...' : '' }}</p>
+        <ion-button (click)="toggleDescription(publication.id)">plus</ion-button>
+      </div>
+      <p class="commentaire">Commentaires</p>
+    </ion-card-content>
+  </ion-card>
+
+  <!-- <ion-card>
+    <ion-img src="chemin/vers/image_de_fond.jpg"></ion-img>
+    <ion-card-header>
+      <ion-card-title>Nom de l'utilisateur</ion-card-title>
+    </ion-card-header>
+    <ion-card-content>
+      Description de la publication
+    </ion-card-content>
+    <ion-row>
+      <ion-col>
+        <ion-button expand="full">Commentaire</ion-button>
+      </ion-col>
+    </ion-row>
+  </ion-card> -->
+  
