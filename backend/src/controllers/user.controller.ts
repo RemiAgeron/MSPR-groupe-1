@@ -47,9 +47,9 @@ export const getUser = async (req: Request, res: Response) => {
 export const updateUser = async (req: Request, res: Response) => {
   try {
     const { id } = req.params;
-    const { firstname, lastname, email, phone, description } = req.body;
+    const { firstname, lastname, email, phone, description, user_picture } = req.body;
 
-    if (!firstname && !lastname && !email && !phone && !description) {
+    if (!firstname && !lastname && !email && !phone && !description && !user_picture) {
       return ErrorUtils.getMissingFieldsError(res);
     } else {
       const checkUser = await prisma.findUnique({
@@ -75,6 +75,9 @@ export const updateUser = async (req: Request, res: Response) => {
         }
         if (description) {
           data = { ...data, description: description };
+        }
+        if (user_picture) {
+          data = { ...data, user_picture: user_picture };
         }
 
         if (Object.keys(data).length !== 0) {
