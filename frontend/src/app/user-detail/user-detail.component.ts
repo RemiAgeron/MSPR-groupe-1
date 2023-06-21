@@ -2,6 +2,7 @@ import { Component } from '@angular/core';
 import { IonicModule, Platform } from '@ionic/angular';
 import { CommonModule } from '@angular/common';
 import { HttpClient } from '@angular/common/http';
+import { HeaderComponent } from '../header/header.component';
 
 interface User {
   id: number;
@@ -51,7 +52,7 @@ interface Botanist {
   templateUrl: './user-detail.component.html',
   styleUrls: ['./user-detail.component.scss'],
   standalone: true,
-  imports: [IonicModule, CommonModule],
+  imports: [IonicModule, CommonModule, HeaderComponent],
 })
 export class UserDetailComponent {
 
@@ -63,12 +64,16 @@ export class UserDetailComponent {
   public segmentChoice: string = "publication";
   public id: string = this.platform.url().substring(this.platform.url().lastIndexOf('/') + 1);
 
+  public pageTitle: string = "User";
+  public icon: string = '';
+
   getUser() {
     return this.http.get<User>('http://127.0.0.1:5000/api/user/profile/' + this.id, {})
       .subscribe(
         (response) => {
           console.log(response);
           this.user = response;
+          this.pageTitle = this.user.firstname + " " + this.user.lastname;
         },
         (error) => {
           console.error('Erreur :', error);

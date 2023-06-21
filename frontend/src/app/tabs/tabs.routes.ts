@@ -14,12 +14,12 @@ export const routes: Routes = [
           import('../home/home.page').then((m) => m.HomePage),
       },
       {
-        path: 'tab2',
+        path: 'search',
         loadComponent: () =>
-          import('../tab2/tab2.page').then((m) => m.Tab2Page),
+          import('../search/search.page').then((m) => m.SearchPage),
       },
       {
-        path: 'tab3',
+        path: 'message',
         loadComponent: () =>
           import('../tab3/tab3.page').then((m) => m.Tab3Page),
       },

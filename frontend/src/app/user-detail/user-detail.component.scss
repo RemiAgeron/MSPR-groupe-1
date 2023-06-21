@@ -13,9 +13,8 @@
   top: 0;
   padding-bottom: 1em;
   padding-top: 1em;
-  background-color: white;
+  background-color: #B3C9B3;
   z-index: 1;
-  box-shadow: 0 0 0.2em white;
 }
 
 .review {
@@ -27,4 +26,12 @@
   background-color: antiquewhite;
   border-radius: 5%;
   box-shadow: 0 0 0.2em gray;
+}
+
+ion-content{
+  --background: #B3C9B3;
+}
+
+ion-item{
+  --background: #B3C9B3;
 }

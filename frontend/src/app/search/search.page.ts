@@ -3,6 +3,7 @@ import { IonicModule } from '@ionic/angular';
 import { ExploreContainerComponent } from '../explore-container/explore-container.component';
 import { CommonModule } from '@angular/common';
 import { HttpClient } from '@angular/common/http';
+import { HeaderComponent } from '../header/header.component';
 
 interface Item {
   id: number,
@@ -12,16 +13,18 @@ interface Item {
 }
 
 @Component({
-  selector: 'app-tab2',
-  templateUrl: 'tab2.page.html',
-  styleUrls: ['tab2.page.scss'],
+  selector: 'app-search',
+  templateUrl: 'search.page.html',
+  styleUrls: ['search.page.scss'],
   standalone: true,
-  imports: [IonicModule, ExploreContainerComponent, CommonModule]
+  imports: [IonicModule, ExploreContainerComponent, CommonModule, HeaderComponent]
 })
-export class Tab2Page {
+export class SearchPage {
   publications!: Item[];
 
   constructor(public http: HttpClient) {}
+  public pageTitle: string = 'Rechercher';
+  public icon: string = '';
 
   public data: Item[] = [];
   public results: Item[] = [];
