@@ -12,6 +12,14 @@ ion-card{
     background-color: white;
     border-radius: 50px;
 }
+.userName{
+    background-color: white;
+    position: absolute;
+    color: black;
+    margin-left: 70px;
+    margin-top: 25px;
+    font-weight: 700;
+}
 
 ion-card-title{
     color: #000000;
@@ -27,6 +35,12 @@ ion-card-title{
     font-size:16px;
 }
 
+.commentaire{
+    color: #000000;
+    display: flex;
+    justify-content: flex-end;
+}
+
 ion-card-header{
     display: flex;
     justify-content: flex-start;
@@ -35,4 +49,17 @@ ion-card-header{
 img{
     width: 30px;
     height: 30px;
+}
+
+.content{
+    display: flex;
+    align-items: center;
+}
+
+ion-button{
+    height: 30px;
+    font-size: 13px;
+    --background:white;
+    --background-activated: #64CF9B;
+    color: black;
 }

@@ -1,7 +1,7 @@
-import { Component } from '@angular/core';
+import { Component, ViewChild } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { PublicationService } from 'src/app/service/publication.service';
-import { IonicModule } from '@ionic/angular';
+import { IonModal, IonicModule, ModalController } from '@ionic/angular';
 import { CommonModule } from '@angular/common';
 import { SharedModule } from 'src/app/shared/shared.module';
 
@@ -16,40 +16,42 @@ export class PublicationsComponent {
 
   publications: any[] = [];
   showFullDescription: { [key: string]: boolean } = {};
+  postComment: any;
+  showComment = false;
+  isModalOpen = false;
 
-
-  constructor(private publicationService : PublicationService) {
-    this.getPublications()
-  }
+  constructor(
+    private publicationService : PublicationService,
+    public modalController: ModalController
+    ) {  }
 
   ngOnInit() {
     this.getPublications()
-  }
+    }
 
 
   getPublications(){
     this.publicationService.getPublications().subscribe({
       next: (res: any) => {
         this.publications.push(...res)
-        console.log(this.publications);
+        this.publications.forEach((publication) => {
+          this.publicationService.getUserNameById(publication.senderId).subscribe((data: any) => {
+            publication.firstname = data.firstname;
+          });
+          this.publicationService.getCommentByPostId(publication.id).subscribe((data: any) => {
+            publication.comments = data.content;
+            console.log(this.publications)
+          });
+        });
       }
     })
   }
-  
-  // getUserNameById(userId: string){
-  //   this.publicationService.getUserNameById().subscribe({
-
-  //   })
-  // }
 
   toggleDescription(publicationId: string): void {
     this.showFullDescription[publicationId] = !this.showFullDescription[publicationId];
   }
-  
-  // fetchPublications(): void {
-  //   this.http.get<Publication[]>('http://localhost:8100/api/post')
-  //     .subscribe((data: Publication[]) => {
-  //       this.publications = data;
-  //     });
-  // }
+
+  setOpen(isOpen: boolean) {
+    this.isModalOpen = isOpen;
+  }
 }

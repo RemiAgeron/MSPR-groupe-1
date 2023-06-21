@@ -6,10 +6,14 @@ import { IonicModule, IonicRouteStrategy } from '@ionic/angular';
 import { routes } from './app/app.routes';
 import { AppComponent } from './app/app.component';
 import { environment } from './environments/environment';
+import { defineCustomElements } from '@ionic/pwa-elements/loader'
 
 if (environment.production) {
   enableProdMode();
 }
+
+// Call the element loader after the platform has been bootstrapped
+defineCustomElements(window);
 
 bootstrapApplication(AppComponent, {
   providers: [

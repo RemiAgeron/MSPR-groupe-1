@@ -1,0 +1,23 @@
+<ion-content [fullscreen]="true">
+  <ion-header class="ion-no-border">
+    <ion-toolbar class="headerToolbar">
+      <ion-buttons slot="start" (click)="goBack()">
+        <ion-icon class="iconNav" name='arrow-back'></ion-icon>
+      </ion-buttons>
+    </ion-toolbar>
+  </ion-header>
+  <h1>Nouvelle publication</h1>
+  <form action="/api/plants" method="POST" enctype="multipart/form-data">
+    <img [src]="photo" *ngIf="photo">
+    <ion-button class="takePhoto" (click)="takePicture()">Prendre une photo</ion-button>
+    <div class="description">
+      <label for="description">Description:</label>
+      <textarea id="description" name="description"></textarea>
+    </div>
+    <div class="namePlante">
+      <label for="name">Nom de la plante:</label>
+      <input type="text" id="name" name="name">
+    </div>
+    <button type="submit">Envoyer</button>
+  </form>
+</ion-content>

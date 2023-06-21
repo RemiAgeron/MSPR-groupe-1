@@ -40,4 +40,9 @@ export const routes: Routes = [
     redirectTo: '/tabs/home',
     pathMatch: 'full',
   },
+  {
+    path: 'add-post',
+    loadComponent: () =>
+      import('../add-post/add-post.page').then((m) => m.AddPostPage),
+  },
 ];

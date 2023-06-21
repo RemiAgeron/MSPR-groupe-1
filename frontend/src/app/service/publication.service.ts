@@ -14,7 +14,11 @@ export class PublicationService {
   }
 
   getUserNameById(userId: string) {
-    return this.http.get(environment.baseUrl + 'user/${userId}');
+    return this.http.get(environment.baseUrl + 'user/' + userId);
+  }
+
+  getCommentByPostId(postId: string) {
+    return this.http.get(environment.baseUrl + 'comment/post/' + postId);
   }
 
 }

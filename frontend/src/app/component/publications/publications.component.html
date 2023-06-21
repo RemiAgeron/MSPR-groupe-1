@@ -1,6 +1,7 @@
   <ion-card *ngFor="let publication of publications">
     <img class="imgPublication" src="../../../assets/plante_fond.jpg">
     <img src="../../../assets/user.svg" class="imgUser">
+    <p class="userName">{{ publication.firstname }}</p>
     <!-- <ion-card-header style="border: 1px solid red;"> -->
       <!-- <ion-card-title>Rémi</ion-card-title> -->
     <!-- </ion-card-header> -->
@@ -12,22 +13,56 @@
         <p class="description">{{ publication.content | slice:0:30 }}{{ publication.content.length > 30 ? '...' : '' }}</p>
         <ion-button (click)="toggleDescription(publication.id)">plus</ion-button>
       </div>
-      <p class="commentaire">Commentaires</p>
+      <p class="commentaire" (click)="setOpen(true)">Commentaires</p>
+      <ion-modal [isOpen]="isModalOpen">
+        <ng-template>
+          <ion-header>
+            <ion-toolbar>
+              <ion-title>Commentaires</ion-title>
+              <ion-buttons slot="end">
+                <ion-button (click)="setOpen(false)">Close</ion-button>
+              </ion-buttons>
+            </ion-toolbar>
+          </ion-header>
+          <ion-content class="ion-padding">
+            <p>{{ publication.comments }}</p>
+          </ion-content>
+        </ng-template>
+      </ion-modal>
     </ion-card-content>
   </ion-card>
 
   <!-- <ion-card>
-    <ion-img src="chemin/vers/image_de_fond.jpg"></ion-img>
-    <ion-card-header>
-      <ion-card-title>Nom de l'utilisateur</ion-card-title>
-    </ion-card-header>
+    <img class="imgPublication" src="../../../assets/plante_fond.jpg">
+    <img src="../../../assets/user.svg" class="imgUser">
+    <p class="userName">coucou</p>
     <ion-card-content>
-      Description de la publication
+      <div>
+        content
+      </div>
+      <div class="content">
+        <p class="description">description</p>
+        <ion-button>plus</ion-button>
+      </div>
+      <p class="commentaire" (click)="setOpen(true)">Commentaires</p>
+      <ion-modal [isOpen]="isModalOpen">
+        <ng-template>
+          <ion-header>
+            <ion-toolbar>
+              <ion-title>Commentaires</ion-title>
+              <ion-buttons slot="end">
+                <ion-button (click)="setOpen(false)">Close</ion-button>
+              </ion-buttons>
+            </ion-toolbar>
+          </ion-header>
+          <ion-content class="ion-padding">
+            <p>
+              Lorem ipsum dolor sit amet consectetur adipisicing elit. Magni illum quidem recusandae ducimus quos
+              reprehenderit. Veniam, molestias quos, dolorum consequuntur nisi deserunt omnis id illo sit cum qui. Eaque,
+              dicta.
+            </p>
+          </ion-content>
+        </ng-template>
+      </ion-modal>
     </ion-card-content>
-    <ion-row>
-      <ion-col>
-        <ion-button expand="full">Commentaire</ion-button>
-      </ion-col>
-    </ion-row>
   </ion-card> -->
-  
