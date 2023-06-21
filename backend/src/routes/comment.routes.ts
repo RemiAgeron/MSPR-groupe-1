@@ -13,7 +13,6 @@ commentRoutes.get(
 );
 commentRoutes.get(
   '/post/:id',
-  checkJwtToken,
   commentController.getCommentByPost,
 );
 commentRoutes.post('/', checkJwtToken, commentController.createComment);
