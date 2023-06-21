@@ -9,5 +9,7 @@ userRoutes.post("/login", authController.login);
 userRoutes.post("/register", authController.register);
 userRoutes.get("/", checkJwtToken, checkAdmin, userController.getUsers);
 userRoutes.get("/:id", checkJwtToken, userController.getUser);
+// userRoutes.get("/profile/:id", checkJwtToken, userController.getUserProfile);
+userRoutes.get("/profile/:id", userController.getUserProfile);
 userRoutes.patch("/:id", checkJwtToken, userController.updateUser);
 userRoutes.delete("/:id", checkJwtToken, userController.deleteUser);
