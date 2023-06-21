@@ -1,24 +1,49 @@
 import { Component } from '@angular/core';
-import { IonicModule } from '@ionic/angular';
+import { IonicModule, Platform } from '@ionic/angular';
 import { CommonModule } from '@angular/common';
-
-interface Publications {
-  description: string;
-  plant: string; 
-}
-
-interface Review {
-  user: User;
-  message: string;
-}
+import { HttpClient } from '@angular/common/http';
 
 interface User {
   id: number;
+  isAdmin: boolean;
   firstname: string;
   lastname: string;
-  biography: string;
-  publications: Publications[];
-  reviews: Review[];
+  email: string;
+  password: string;
+  phone?: string;
+  description?: string;
+  user_picture?: string;
+  created_at: Date;
+  Botanist: Botanist[];
+  Post: Post[];
+  Review?: Review[];
+}
+
+interface Post {
+  id: number;
+  title: string;
+  content: string;
+  tags?: string;
+  picture?: string;
+  senderId: number;
+  created_at: Date;
+  updated_at: Date;
+}
+
+interface Review {
+  id: number;
+  content: string;
+  senderId: number;
+  botanistId: number;
+  created_at: Date;
+  reviewer?: User;
+}
+
+interface Botanist {
+  id: number;
+  userId: number;
+  address: string;
+  company_name: string;
 }
 
 @Component({
@@ -30,22 +55,26 @@ interface User {
 })
 export class UserDetailComponent {
 
-  public user: User = {
-    id: 8,
-    firstname: "Dimitry",
-    lastname: "Neutron",
-    biography: "Voici une petite description de qui je suis...",
-    publications: new Array(28).fill({
-      description: "Belle plante",
-      plant: "Avocatier"
-    }),
-    reviews: new Array(20).fill({
-      user: {id: 1, firstname: "Rémi", lastname: "Ageron", biography: "Voici ma description...", publications: [], reviews: []},
-      message: "Personnes de confiance, donne de très bons conseils."
-    })
+  constructor(public http: HttpClient, private platform: Platform) {
+    this.getUser();
   }
 
+  public user?: User;
   public segmentChoice: string = "publication";
+  public id: string = this.platform.url().substring(this.platform.url().lastIndexOf('/') + 1);
+
+  getUser() {
+    return this.http.get<User>('http://127.0.0.1:5000/api/user/profile/' + this.id, {})
+      .subscribe(
+        (response) => {
+          console.log(response);
+          this.user = response;
+        },
+        (error) => {
+          console.error('Erreur :', error);
+        }
+      )
+  }
 
   handleChange(event: any) {
     this.segmentChoice = event.target.value;

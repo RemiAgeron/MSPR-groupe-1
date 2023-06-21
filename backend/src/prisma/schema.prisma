@@ -8,6 +8,7 @@ datasource db {
   url      = env("DATABASE_URL")
 }
 
+// TODO: add user_picture
 model users {
   id               Int         @id @default(autoincrement())
   isAdmin          Boolean     @default(false)
@@ -17,7 +18,7 @@ model users {
   password         String
   phone            String?
   description      String?
-  // user_picture
+  user_picture     String?
   created_at       DateTime    @default(now())
   sentMessages     messages[]  @relation("sentMessages")
   receivedMessages messages[]  @relation("receivedMessages")
@@ -65,7 +66,7 @@ model posts {
   title      String
   content    String
   tags       String?
-  // picture   Blob
+  picture    String?
   senderId   Int
   sender     users      @relation(fields: [senderId], references: [id])
   comments   comments[]

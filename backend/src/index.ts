@@ -19,6 +19,7 @@ import { reviewRoutes } from './routes/review.routes';
 // // Publications routes
 import { postRoutes } from './routes/post.routes';
 import { commentRoutes } from './routes/comment.routes';
+import { searchRoutes } from './routes/search.routes';
 
 dotenv.config();
 
@@ -46,6 +47,9 @@ app.use('/api/review', reviewRoutes);
 // // Publications routes
 app.use('/api/post', postRoutes);
 app.use('/api/comment', commentRoutes);
+
+// // Search routes
+app.use('/api/search', searchRoutes);
 
 app.listen(HTTP_PORT, () => {
   console.log(`Server running on port ${HTTP_PORT}`);

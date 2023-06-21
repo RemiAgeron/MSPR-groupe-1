@@ -3,9 +3,9 @@
     <ion-buttons slot="start">
       <ion-back-button ></ion-back-button>
     </ion-buttons>
-    <ion-title>{{ user.firstname }} {{ user.lastname }}</ion-title>
+    <ion-title>{{ user?.firstname }} {{ user?.lastname }}</ion-title>
     <ion-buttons slot="end">
-      <ion-button href="/user/8">
+      <ion-button href="/user?/8">
         <ion-icon name="person-circle-outline"></ion-icon>
       </ion-button>
     </ion-buttons>
@@ -14,16 +14,16 @@
 
 <ion-content>
   <ion-item class="ion-margin-vertical">
-    <ion-img class="biography" alt="User profile's picture" src="assets/user.svg" />
+    <ion-img class="biography" alt="User? profile's picture" src="assets/user.svg" />
     <ion-label margin>
       <ion-grid>
-        <ion-col>{{ user.firstname }}</ion-col>
-        <ion-col>{{ user.lastname }}</ion-col>
+        <ion-col>{{ user?.firstname }}</ion-col>
+        <ion-col>{{ user?.lastname }}</ion-col>
       </ion-grid>
-      <p>{{ user.biography }}</p>
+      <p>{{ user?.description }}</p>
     </ion-label>
   </ion-item>
-  <div class="ion-padding-horizontal sticky">
+  <div *ngIf="user?.Review !== undefined" class="ion-padding-horizontal sticky">
     <ion-segment value="{{ segmentChoice }}" (ionChange)="handleChange($event)">
       <ion-segment-button value="publication">
         <ion-label>Publications</ion-label>
@@ -35,10 +35,10 @@
   </div>
   <div>
     <div *ngIf="segmentChoice === 'publication'">
-      <ion-title *ngIf="user.publications.length === 0">Aucunes publications</ion-title>
+      <ion-title *ngIf="(user?.Post || []).length === 0">Aucunes publications</ion-title>
       <ion-grid>
         <ion-row>
-          <ion-col size="4" *ngFor="let item of user.publications">
+          <ion-col size="4" *ngFor="let item of (user?.Post || [])">
             <a href="/feed">
               <ion-img class="publication" src="assets/plant.svg" />
             </a>
@@ -47,18 +47,18 @@
       </ion-grid>
     </div>
     <div *ngIf="segmentChoice === 'review'">
-      <ion-title *ngIf="user.reviews.length === 0">Aucunes reviews</ion-title>
+      <ion-title *ngIf="(user?.Review || []).length === 0">Aucunes reviews</ion-title>
       <ion-list>
-        <ion-item button *ngFor="let item of user.reviews">
+        <ion-item button *ngFor="let item of (user?.Review || [])">
           <ion-avatar slot="start">
             <ion-img class="review" alt="Item's type icon" src="assets/user.svg" />
           </ion-avatar>
           <ion-label margin>
             <ion-grid>
-              <ion-col>{{ item.user.firstname }}</ion-col>
-              <ion-col>{{ item.user.lastname }}</ion-col>
+              <ion-col>{{ item.reviewer?.firstname }}</ion-col>
+              <ion-col>{{ item.reviewer?.lastname }}</ion-col>
             </ion-grid>
-            <p>{{ item.message }}</p>
+            <p>{{ item.content }}</p>
           </ion-label>
         </ion-item>
       </ion-list>
