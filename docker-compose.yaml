@@ -40,5 +40,21 @@ services:
     networks:
       - arosaje-network
 
+  grafana:
+    container_name: grafana
+    image: grafana/grafana
+    restart: on-failure
+    ports:
+      - "3000:3000"
+    depends_on:
+      - db
+    volumes:
+      - grafana-data:/var/lib/grafana
+    networks:
+      - arosaje-network
+
+volumes:
+  grafana-data:
+
 networks:
   arosaje-network:
