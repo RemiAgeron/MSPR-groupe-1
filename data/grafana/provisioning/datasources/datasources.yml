@@ -1,0 +1,21 @@
+apiVersion: 1
+
+datasources:
+- name: Prometheus
+  type: prometheus
+  access: proxy
+  url: http://prometheus:9090
+  isDefault: true
+  version: 1
+  basicAuth: false
+  editable: true
+
+# - name: Postgres
+#   type: postgres
+#   access: proxy
+#   url: http://postgres:5432
+#   database: postgres
+#   user: johndoe
+#   password: randompassword
+#   isDefault: false
+#   editable: true
