@@ -4,7 +4,7 @@ import dotenv = require('dotenv');
 import bcrypt = require('bcrypt');
 import jwt = require('jsonwebtoken');
 
-import ErrorUtils from '../utils/error.utils';
+import ErrorUtils from '../utils/error';
 
 const prisma = new PrismaClient().users;
 dotenv.config();

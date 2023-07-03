@@ -1,7 +1,7 @@
 import { PrismaClient } from '@prisma/client';
 import { Request, Response } from 'express';
 
-import ErrorUtils from '../utils/error.utils';
+import ErrorUtils from '../utils/error';
 
 const prisma = new PrismaClient().users;
 const prismaReviews = new PrismaClient().reviews;
