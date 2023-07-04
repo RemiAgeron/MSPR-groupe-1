@@ -12,13 +12,6 @@ export const restResponseTimeHistogram = new client.Histogram({
   labelNames: ['method', 'route', 'status'],
 });
 
-export const databaseResponseTimeHistogram = new client.Histogram({
-  name: 'database_response_time_seconds',
-  help: 'Database response time in seconds',
-  labelNames: ['operation', 'success'],
-});
-
-
 export const startMetricsServer = () => {
   const collectDefaultMetrics = client.collectDefaultMetrics;
 
