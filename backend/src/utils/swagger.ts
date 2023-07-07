@@ -1,9 +1,17 @@
-import { Application, Request, Response } from 'express';
+import { Application } from 'express';
 import swaggerJsDoc from 'swagger-jsdoc';
 import swaggerUi from 'swagger-ui-express';
+import { botanistRequest } from '../routes/botanist.routes';
+import { commentRequest } from '../routes/comment.routes';
+import { searchRequest } from '../routes/search.routes';
+import { messageRequest } from '../routes/message.routes';
+import { postRequest } from '../routes/post.routes';
+import { userRequest } from '../routes/user.routes';
+import { reviewRequest } from '../routes/review.routes';
 
 const options = {
   definition: {
+    openapi: "3.0.0",
     info: {
       title: 'Arosaje API',
       version: '1.0.0',
@@ -23,48 +31,17 @@ const options = {
         bearerAuth: []
       }
     ],
-    basePath: '/api/',
+    servers: [
+      { url: "http://localhost:5000/api" }
+    ],
     paths: {
-      "/user": {
-        get: {
-          tags: ["User"],
-          responses: {
-            200: { description: "Operation succeed" },
-            500: { description: "Server Error" },
-          }
-        }
-      },
-      "/user/{id}": {
-        get: {
-          tags: ["User"],
-          parameters: [
-            {
-              name: "id",
-              in: "path",
-              description: "User's ID",
-              required: true,
-              schema: {
-                type: "integer"
-              }
-            }
-          ],
-          responses: {
-            200: { description: "Operation succeed" },
-            404: { description: "Not Found" },
-            400: { description: "Bad request" },
-            500: { description: "Server Error" },
-          }
-        }
-      },
-      "/botanist": {
-        get: {
-          tags: ["Botanist"],
-          responses: {
-            200: { description: "Operation succeed" },
-            500: { description: "Server Error" },
-          }
-        }
-      },
+      ...botanistRequest,
+      ...commentRequest,
+      ...searchRequest,
+      ...messageRequest,
+      ...postRequest,
+      ...userRequest,
+      ...reviewRequest,
     }
   },
   apis: []
