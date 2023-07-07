@@ -21,6 +21,8 @@ import { postRoutes } from './routes/post.routes';
 import { commentRoutes } from './routes/comment.routes';
 import { searchRoutes } from './routes/search.routes';
 
+import swaggerDocs from './utils/swagger';
+
 dotenv.config();
 
 const app: Application = express();
@@ -53,6 +55,7 @@ app.use('/api/search', searchRoutes);
 
 app.listen(HTTP_PORT, () => {
   console.log(`Server running on port ${HTTP_PORT}`);
+  swaggerDocs(app);
 });
 
 module.exports = app;
