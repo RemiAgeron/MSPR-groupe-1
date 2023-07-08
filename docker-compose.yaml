@@ -51,8 +51,12 @@ services:
     depends_on:
       - db
     volumes:
-      - grafana-data:/var/lib/grafana
+      - /etc/localtime:/etc/localtime:ro
+      - /etc/timezone:/etc/timezone:ro
+      - ./data/grafana/grafana.ini:/etc/grafana/grafana.ini
       - ./data/grafana/provisioning:/etc/grafana/provisioning
+      - ./data/grafana/grafana-data:/var/lib/grafana
+    user: "0"
     networks:
       - arosaje-network
 
@@ -71,7 +75,7 @@ services:
     networks:
       - arosaje-network
 
-# FIXME: cadvisor is not working on WSL2 (docker path issue)
+# ⚠️ cadvisor is not working on WSL2 (docker path issue)
   # cadvisor:
   #   container_name: cadvisor
   #   image: gcr.io/cadvisor/cadvisor:v0.47.2
