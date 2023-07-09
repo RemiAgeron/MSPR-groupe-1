@@ -5,6 +5,7 @@ import bcrypt = require('bcrypt');
 import jwt = require('jsonwebtoken');
 
 import ErrorUtils from '../utils/error';
+import { userCounter } from '../utils/metrics';
 
 const prisma = new PrismaClient().users;
 dotenv.config();
@@ -84,6 +85,8 @@ export const register = async (req: Request, res: Response) => {
         } else {
           const token = generateAccessToken(newUser.id, newUser.isAdmin);
 
+          userCounter.inc();
+          
           return res.status(201).json({ id: newUser.id, token: token });
         }
       }

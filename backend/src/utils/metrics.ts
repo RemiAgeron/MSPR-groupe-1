@@ -1,29 +1,38 @@
-import express, { Application } from 'express';
-import client from 'prom-client';
-import cors from 'cors';
+import prometheus from 'prom-client';
 
-const app: Application = express();
+export const registry = new prometheus.Registry();
 
-app.use(cors());
+export const requestCounter = new prometheus.Counter({
+  name: 'request_counter',
+  help: 'Total number of requests',
+  registers: [registry],
+});
 
-export const restResponseTimeHistogram = new client.Histogram({
+export const restResponseTimeHistogram = new prometheus.Histogram({
   name: 'rest_response_time_seconds',
   help: 'REST API response time in seconds',
   labelNames: ['method', 'route', 'status'],
+  registers: [registry],
 });
 
-export const startMetricsServer = () => {
-  const collectDefaultMetrics = client.collectDefaultMetrics;
+export const userCounter = new prometheus.Counter({
+  name: 'user_counter',
+  help: 'Total number of users',
+  registers: [registry],
+});
 
-  collectDefaultMetrics({ prefix: 'arosaje_' });
+export const postCounter = new prometheus.Counter({
+  name: 'post_counter',
+  help: 'Total number of posts',
+  registers: [registry],
+});
 
-  app.get('/metrics', async (req, res) => {
-    res.set('Content-Type', client.register.contentType);
+registry.registerMetric(requestCounter);
+registry.registerMetric(restResponseTimeHistogram);
+registry.registerMetric(userCounter);
 
-    return res.send(await client.register.metrics());
-  });
+registry.setDefaultLabels({
+  app: 'arosaje-api',
+});
 
-  app.listen(9100, () => {
-    console.log(`Metrics server running on port 9100`);
-  });
-};
+prometheus.collectDefaultMetrics({register: registry});

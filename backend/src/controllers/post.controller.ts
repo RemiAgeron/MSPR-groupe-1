@@ -2,6 +2,7 @@ import { PrismaClient } from '@prisma/client';
 import { Request, Response } from 'express';
 
 import ErrorUtils from '../utils/error';
+import { postCounter } from '../utils/metrics';
 
 const prismaPosts = new PrismaClient().posts;
 const prismaUser = new PrismaClient().users;
@@ -11,6 +12,10 @@ const prismaUser = new PrismaClient().users;
 export const getPosts = async (req: Request, res: Response) => {
   try {
     const posts = await prismaPosts.findMany();
+
+    postCounter.reset();
+    postCounter.inc(posts.length);
+
     return res.status(200).json(posts);
   } catch (error) {
     return ErrorUtils.getError(error, res);
@@ -103,7 +108,7 @@ export const createPost = async (req: Request, res: Response) => {
       };
     }
 
-    if(picture !== null && picture !== undefined) {
+    if (picture !== null && picture !== undefined) {
       data = { ...data, picture: picture } as {
         title: string;
         content: string;
@@ -114,12 +119,14 @@ export const createPost = async (req: Request, res: Response) => {
           };
         };
         tags?: string;
-      }
+      };
     }
 
     const post = await prismaPosts.create({
       data,
     });
+
+    postCounter.inc();
 
     return res.status(201).json(post);
   } catch (error) {
