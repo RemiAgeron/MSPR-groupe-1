@@ -19,6 +19,8 @@ import {
   registry,
 } from './utils/metrics';
 
+import swaggerDocs from './utils/swagger';
+
 dotenv.config();
 
 const HTTP_PORT = process.env.PORT || 5000;
@@ -65,6 +67,7 @@ app.use('/api/search', searchRoutes);
 
 app.listen(HTTP_PORT, () => {
   console.log(`Server running on port ${HTTP_PORT}`);
+  swaggerDocs(app);
 });
 
 module.exports = app;
