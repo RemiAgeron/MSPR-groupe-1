@@ -1,7 +1,8 @@
 import { PrismaClient } from '@prisma/client';
 import { Request, Response } from 'express';
 
-import ErrorUtils from '../utils/error.utils';
+import ErrorUtils from '../utils/error';
+import { userCounter } from '../utils/metrics';
 
 const prisma = new PrismaClient().users;
 const prismaReviews = new PrismaClient().reviews;
@@ -11,6 +12,10 @@ const prismaReviews = new PrismaClient().reviews;
 export const getUsers = async (req: Request, res: Response) => {
   try {
     const users = await prisma.findMany();
+
+    userCounter.reset();
+    userCounter.inc(users.length);
+
     return res.status(200).json(users);
   } catch (error) {
     return ErrorUtils.getError(error, res);
