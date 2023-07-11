@@ -15,6 +15,7 @@ dist
 
 # >>> Database >>> #
 postgres-data
+grafana-data
 migrations
 
 # >>> Keys >>> #

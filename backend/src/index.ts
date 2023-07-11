@@ -1,58 +1,73 @@
 /* eslint-disable no-console */
 import dotenv = require('dotenv');
-import express, { Application } from 'express';
+import express, { Application, Request, Response } from 'express';
 import bodyParser from 'body-parser';
 import morgan from 'morgan';
 import cors from 'cors';
-// import multer from 'multer';
+import responseTime from 'response-time';
 
-// User routes
 import { userRoutes } from './routes/user.routes';
 import { botanistRoutes } from './routes/botanist.routes';
-
-// Messages routes
 import { messageRoutes } from './routes/message.routes';
-
-// Review routes
 import { reviewRoutes } from './routes/review.routes';
-
-// // Publications routes
 import { postRoutes } from './routes/post.routes';
 import { commentRoutes } from './routes/comment.routes';
 import { searchRoutes } from './routes/search.routes';
+import {
+  requestCounter,
+  restResponseTimeHistogram,
+  registry,
+} from './utils/metrics';
+
+import swaggerDocs from './utils/swagger';
 
 dotenv.config();
 
+const HTTP_PORT = process.env.PORT || 5000;
+
 const app: Application = express();
 
-// Middlewares
 app.use(cors());
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(morgan('dev'));
 
-const HTTP_PORT = process.env.PORT || 5000;
+app.get('/metrics', async (req, res) => {
+  res.setHeader('Content-Type', registry.contentType);
+  return res.send(await registry.metrics());
+});
 
-// API Routes
-// User routes
+app.use((req: Request, res: Response, next) => {
+  requestCounter.inc();
+  next();
+});
+
+app.use(
+  responseTime((req: Request, res: Response, time: number) => {
+    if (req?.route?.path) {
+      restResponseTimeHistogram.observe(
+        {
+          method: req.method,
+          route: req.baseUrl + req.route.path,
+          status: res.statusCode,
+        },
+        time * 1000,
+      );
+    }
+  }),
+);
+
 app.use('/api/user', userRoutes);
 app.use('/api/botanist', botanistRoutes);
-
-// Messages routes
 app.use('/api/message', messageRoutes);
-
-// // Review routes
 app.use('/api/review', reviewRoutes);
-
-// // Publications routes
 app.use('/api/post', postRoutes);
 app.use('/api/comment', commentRoutes);
-
-// // Search routes
 app.use('/api/search', searchRoutes);
 
 app.listen(HTTP_PORT, () => {
   console.log(`Server running on port ${HTTP_PORT}`);
+  swaggerDocs(app);
 });
 
 module.exports = app;
